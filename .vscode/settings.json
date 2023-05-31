@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "__tuple": "c",
+        "array": "c",
+        "__bit_reference": "c",
+        "__split_buffer": "c",
+        "vector": "c"
     }
 }
