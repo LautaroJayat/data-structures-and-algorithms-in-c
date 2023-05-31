@@ -18,7 +18,7 @@ docker run -v $(pwd)/:/app -it clab
 Then, inside our container we can start working:
 
 ```bash
-cd ./app/01_linked_list
+cd ./app/02_linked_list
 
 gcc -o test linked_list.c test.c
 
