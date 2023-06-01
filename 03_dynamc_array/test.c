@@ -39,6 +39,7 @@ void TestHappyPath() {
     }
 }
 
-void main() {
+int main(void) {
     TestHappyPath();
+    return 0;
 }

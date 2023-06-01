@@ -79,8 +79,9 @@ void TestEdgeCases() {
     _testPoppingEmptyStack();
 }
 
-void main() {
+int main(void) {
     TestCreateStack();
     TestHappyPath();
     TestEdgeCases();
+    return 0;
 }

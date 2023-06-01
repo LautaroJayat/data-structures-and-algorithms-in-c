@@ -152,9 +152,10 @@ void TestRemoveFromLastPosition() {
     }
 }
 
-int main() {
+int main(void) {
     TestLinkedListOrdering();
     TestInsertAtSomePlace();
     TestInsertAtTheBeginingAndTheEnd();
     TestRemoveFromLastPosition();
+    return 0;
 }
