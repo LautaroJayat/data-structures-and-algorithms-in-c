@@ -82,7 +82,6 @@ bool Pop(D_array* array, int32_t* returnValue) {
         return false;
     }
     array->size--;
-    int32_t x;
     *returnValue = array->collection[array->size];;
     return true;
 }
