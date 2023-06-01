@@ -1,4 +1,4 @@
-# data-structures-in-c
+# data-structures-and-algorithms-in-c
 
 ## How to start
 To be able to play with the source without dealing with OS and build tools I would suggest to follow these steps:
