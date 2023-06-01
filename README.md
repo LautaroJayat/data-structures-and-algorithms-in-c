@@ -20,7 +20,7 @@ Then, inside our container we can start working:
 ```bash
 cd ./app/02_linked_list
 
-gcc -o test linked_list.c test.c
+make build
 
-./test
+make run-tests
 ```
