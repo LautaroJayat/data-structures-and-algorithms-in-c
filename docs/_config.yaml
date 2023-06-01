@@ -10,7 +10,7 @@ description:
 
 # Build settings
 
-remote_theme: poole/poole
+theme: minima
 
 plugins:
   - jekyll-feed
