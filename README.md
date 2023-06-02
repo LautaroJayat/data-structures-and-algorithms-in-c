@@ -17,12 +17,15 @@ I hope these examples end up being useful to someone
 
 | Chapter |                                     Topic                                      |                                              Contents                                               |
 | :-----: | :----------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
+|    0    |         [Setting up a lab to work in c](00_setting_the_lab/readme.md)          |               A quick tutorial on how to create a development environment with docker               |
 |    1    | [Implementing a stack using an array](01_stack_array_implementation/readme.md) |                 Overview on how a stack works and how to implement it with an array                 |
 |    2    |         [Implementing a simple linked list](02_linked_list/readme.md)          |                  An explanation on how a linked list works and how to implement it                  |
 |    3    |             [Creating a dynamic array](03_dynamic_array/readme.md)             |      The differences between an static array an a dynamicaly sized array, with implementations      |
 |    4    | [Checking for balanced braces in a string](04_check_balanced_braces/readme.md) | A hands-on example on how to check for unbalanced braces in a string using the stack from chapter 2 |
 
-## How to start
+## How to start playing with the source code
+
+If you want to skip all of the above, if you are a person who loves learning by reading code, [you can clone the github repo](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c).
 
 To be able to play with the source without dealing with OS and build tools I would suggest to follow these steps:
 
