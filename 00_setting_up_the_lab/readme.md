@@ -43,6 +43,8 @@ The main task here is to create this virtual world. It should look like a Debian
 For this, lets firts create the so called "Dockerfile" to instruct docker what do we want.
 
 ```Dockerfile
+# ./Dockerfile
+
 # 1. start from debian
 FROM debian:latest
 
