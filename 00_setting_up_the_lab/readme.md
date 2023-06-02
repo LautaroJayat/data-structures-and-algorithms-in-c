@@ -24,7 +24,7 @@ The easiest approach to start using it in a isolated environment, without breaki
 
 We usually say "Docker" to refer a tool or a set of tools that let us build, run, and manage containers.
 
-Also, we usually say "containers" to refeer to an implementation of some kind of virtualization technology that allow isolate environments and processes as if they were separate machines with their own operative systems, programs, configurations, and so on.
+Also, we usually say "containers" to refeer to an implementation of some kind of virtualization technology that allows to isolate environments and processes as if they were separate machines with their own operative systems, programs, configurations, and so on.
 
 To install Docker the best guides can be found in [their official website](https://www.docker.com/).
 
