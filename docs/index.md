@@ -1,4 +1,4 @@
-# data-structures-and-algorithms-in-c
+# An overview of data structures and algorithms in C
 
 When starting out in programming, it is common to perceive certain aspects or behaviors as 'magical'.
 
