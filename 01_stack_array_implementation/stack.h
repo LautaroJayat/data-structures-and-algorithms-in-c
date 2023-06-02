@@ -6,8 +6,8 @@
 
 typedef struct {
     int32_t* collection;
-    int32_t capacity;
-    int32_t size;
+    uint32_t capacity;
+    uint32_t size;
 } Stack;
 
 Stack* CreateNewStack(uint32_t capacity);
