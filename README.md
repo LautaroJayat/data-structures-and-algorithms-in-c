@@ -8,6 +8,15 @@ Exploring the reasoning behind various data structures and how one can use them 
 
 I hope these examples end up being useful to someone
 
+## Contents
+
+| Chapter |                                     Topic                                      |
+| :-----: | :----------------------------------------------------------------------------: |
+|    1    | [Implementing a stack using an array](01_stack_array_implementation/readme.md) |
+|    2    |         [Implementing a simple linked list](02_linked_list/readme.md)          |
+|    3    |             [Creating a dynamic array](03_dynamic_array/readme.md)             |
+|    4    | [Checking for balanced braces in a string](04_check_balanced_braces/readme.md) |
+
 ## How to start
 
 To be able to play with the source without dealing with OS and build tools I would suggest to follow these steps:
