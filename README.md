@@ -1,3 +1,8 @@
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=sociale&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lautaro-jayat/)
+[![GitHub watchers](https://img.shields.io/github/watchers/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Watch)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/watchers/)
+[![GitHub forks](https://img.shields.io/github/forks/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Fork)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/network/)
+[![GitHub stars](https://img.shields.io/github/stars/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Star)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/stargazers/)
+
 # An overview of data structures and algorithms in C
 
 When starting out in programming, it is common to perceive certain aspects or behaviors as 'magical'.
@@ -10,12 +15,12 @@ I hope these examples end up being useful to someone
 
 ## Contents
 
-| Chapter |                                     Topic                                      |
-| :-----: | :----------------------------------------------------------------------------: |
-|    1    | [Implementing a stack using an array](01_stack_array_implementation/readme.md) |
-|    2    |         [Implementing a simple linked list](02_linked_list/readme.md)          |
-|    3    |             [Creating a dynamic array](03_dynamic_array/readme.md)             |
-|    4    | [Checking for balanced braces in a string](04_check_balanced_braces/readme.md) |
+| Chapter |                                     Topic                                      |                                              Contents                                               |
+| :-----: | :----------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
+|    1    | [Implementing a stack using an array](01_stack_array_implementation/readme.md) |                 Overview on how a stack works and how to implement it with an array                 |
+|    2    |         [Implementing a simple linked list](02_linked_list/readme.md)          |                  An explanation on how a linked list works and how to implement it                  |
+|    3    |             [Creating a dynamic array](03_dynamic_array/readme.md)             |      The differences between an static array an a dynamicaly sized array, with implementations      |
+|    4    | [Checking for balanced braces in a string](04_check_balanced_braces/readme.md) | A hands-on example on how to check for unbalanced braces in a string using the stack from chapter 2 |
 
 ## How to start
 
