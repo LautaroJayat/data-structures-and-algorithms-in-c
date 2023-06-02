@@ -48,7 +48,7 @@ For example we could mention **Peek**-ing an element, which allows to see the la
 
 In the same way, we could check if the stack is empty of full to avoid performing operations that could not have sense in abstract, or crashing our system in a real implementation.
 
-## Now yes, on implementation detailsg
+## Now yes, on implementation details
 
 In this example we are going to implement the stack using an a simple array.
 
