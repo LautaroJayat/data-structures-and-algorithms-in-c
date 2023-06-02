@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 
-typedef struct Stack_T {
+typedef struct {
     int* collection;
     uint32_t capacity;
     uint32_t size;

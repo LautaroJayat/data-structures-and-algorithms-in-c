@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef struct D_array_T
+typedef struct
 {
     int32_t* collection;
     u_int32_t capacity;
