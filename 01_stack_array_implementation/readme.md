@@ -66,7 +66,7 @@ For the implementation we will support the following operations:
 
 To begin, lets create a headers file that will define or act as our interface:
 
-```C
+```c
 // stack.h
 #pragma once
 #include <stdlib.h>
