@@ -54,7 +54,7 @@ make run-tests
 
 <details>
 
-**<summary> Note </summary>**
+<summary> Note </summary>
 
 Keep in mind I'm not a C expert nor I know all the conventions for this language.
 I will strive to keep all the examples and the source as _correct_ as I can.
