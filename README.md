@@ -23,12 +23,6 @@ I hope these examples end up being useful to someone
 |    3    |             [Creating a dynamic array](03_dynamic_array/readme.md)             |      The differences between an static array an a dynamicaly sized array, with implementations      |
 |    4    | [Checking for balanced braces in a string](04_check_balanced_braces/readme.md) | A hands-on example on how to check for unbalanced braces in a string using the stack from chapter 2 |
 
-**Note**:
-
->Keep in mind I'm not a C expert nor I know all the conventions for this language.
-I will strive to keep all the examples and the source as __correct__ as I can.
-Also, If you read something odd, you can [make a PR](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/pulls) or [fill an issue](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/issues) in the [github repo](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c).
-
 ## How to start playing with the source code
 
 If you want to skip all of the above, if you are a person who loves learning by reading code, [you can clone the github repo](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c).
@@ -57,3 +51,13 @@ make build
 
 make run-tests
 ```
+
+<details>
+
+**<summary> Note </summary>**
+
+Keep in mind I'm not a C expert nor I know all the conventions for this language.
+I will strive to keep all the examples and the source as _correct_ as I can.
+Also, If you read something odd, you can [make a PR](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/pulls) or [fill an issue](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/issues) in the [github repo](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c).
+
+</details>
