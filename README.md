@@ -17,7 +17,7 @@ I hope these examples end up being useful to someone
 
 | Chapter |                                     Topic                                      |                                              Contents                                               | Source                                                                                                              |
 | :-----: | :----------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: | ------------------------------------------------------------------------------------------------------------------- |
-|    0    |        [Setting up a lab to work with C](00_setting_up_the_lab/readme.md)        |               A quick tutorial on how to create a development environment with docker               |
+|    0    |       [Setting up a lab to work with C](00_setting_up_the_lab/readme.md)       |               A quick tutorial on how to create a development environment with docker               |
 |    1    | [Implementing a stack using an array](01_stack_array_implementation/readme.md) |                 Overview on how a stack works and how to implement it with an array                 | [link](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/tree/main/01_stack_array_implementation) |
 |    2    |         [Implementing a simple linked list](02_linked_list/readme.md)          |                  An explanation on how a linked list works and how to implement it                  | [link](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/tree/main/02_linked_list)                |
 |    3    |             [Creating a dynamic array](03_dynamic_array/readme.md)             |      The differences between an static array an a dynamicaly sized array, with implementations      | [link](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/tree/main/03_dynamic_array)              |
@@ -52,14 +52,12 @@ make build
 make run-tests
 ```
 
-<details>
+---
 
-<summary> Note </summary>
+**Note:**
 
 Keep in mind I'm not a C expert nor I know all the conventions for this language.
 
 I will strive to keep all the examples and the source as _correct_ as I can.
 
 Also, If you read something odd, you can [make a PR](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/pulls) or [fill an issue](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/issues) in the [github repo](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c).
-
-</details>
