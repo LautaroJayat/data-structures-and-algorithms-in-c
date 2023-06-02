@@ -10,20 +10,15 @@ const int END_OF_LINE = 0;
 
 bool IsABalancedString(char* input) {
     int stringLength = 0;
-
-    while (input[stringLength] != 0) {
+    while (input[stringLength] != END_OF_LINE) {
         stringLength++;
     }
-
     if (stringLength == 0) {
         printf("empty string provided");
         return true;
     }
-
     Stack* stack = CreateNewStack(stringLength);
-
     int i = 0;
-
     for (i = 0; i < stringLength; i++) {
         if (input[i] == OPEN_BRACE) {
             Push(stack, input[i]);
@@ -49,8 +44,6 @@ bool IsABalancedString(char* input) {
         printf("the string was balanced\n");
         return true;
     }
-
     printf("the string was unbalanced\n");
     return false;
-
 }
