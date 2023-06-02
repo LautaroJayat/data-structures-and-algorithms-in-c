@@ -17,7 +17,7 @@ I hope these examples end up being useful to someone
 
 | Chapter |                                     Topic                                      |                                              Contents                                               |
 | :-----: | :----------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
-|    0    |         [Setting up a lab to work in c](00_setting_the_lab/readme.md)          |               A quick tutorial on how to create a development environment with docker               |
+|    0    |         [Setting up a lab to work in c](00_setting_up_the_lab/readme.md)          |               A quick tutorial on how to create a development environment with docker               |
 |    1    | [Implementing a stack using an array](01_stack_array_implementation/readme.md) |                 Overview on how a stack works and how to implement it with an array                 |
 |    2    |         [Implementing a simple linked list](02_linked_list/readme.md)          |                  An explanation on how a linked list works and how to implement it                  |
 |    3    |             [Creating a dynamic array](03_dynamic_array/readme.md)             |      The differences between an static array an a dynamicaly sized array, with implementations      |
