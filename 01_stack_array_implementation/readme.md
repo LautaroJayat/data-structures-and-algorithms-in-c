@@ -1,23 +1,14 @@
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=sociale&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lautaro-jayat/)
-[![GitHub watchers](https://img.shields.io/github/watchers/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Watch)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/watchers/)
-[![GitHub forks](https://img.shields.io/github/forks/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Fork)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/network/)
-[![GitHub stars](https://img.shields.io/github/stars/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Star)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/stargazers/)
-
-[<- go back](../README.md)
-
 # Implementing a stack using a simple array
 
 ## The stack as an abstract data structure
 
-The stack is a relatively simple data structure.
+Thinking abstract, it acts as a container that preserves the order of elements in the way they were added.
 
-Thinking abstract, it is a container where every time you put in something the order is preserved in chronologically order.
+To remove an element, one can only take the last element that was placed there, which is known as the element at the top of the stack.
 
-Then, to remove an element one can only take the last element that was placed there (the element at the top of the stack).
+The fundamental operations are typically referred to as **Push**, which adds an element to the stack, and **Pop**, which retrieves the last element.
 
-The fundamental operations are usually called **Push** for the action of adding something, and **Pop** to get the last element.
-
-The order in which an element is placed or removed from the stack is usually called "**last in first out**" or **LIFO**.
+The order in which elements are placed into or removed from the stack is commonly known as "**last in, first out**" or **LIFO**.
 
 To ilustrate the idea:
 
@@ -39,22 +30,22 @@ To ilustrate the idea:
 
 # 4. Now I want to remove an element
 
-[ X , Y ] #--> and you got Z because it was the latest element placed in there.
+[ X , Y ] # --> and you got Z because it was the latest element placed in there.
 ```
 
-There are other operations one could do with a stack, these are called non essential operations.
+Apart from the fundamental operations, there are other operations that can be performed on a stack, commonly referred to as non-essential operations.
 
-For example we could mention **Peek**-ing an element, which allows to see the last element added without removing it. As this behavior could be also achieved by removing an element and then adding it again at the top of the stack, it is not considered as essential.
+One such operation is called **Peek**, which allows us to observe the last element added to the stack without removing it. Although this behavior can be achieved by temporarily removing the element and subsequently adding it back to the top of the stack, it is not considered essential.
 
-In the same way, we could check if the stack is empty of full to avoid performing operations that could not have sense in abstract, or crashing our system in a real implementation.
+Similarly, as other examples of non essential operantios, we can also check whether the stack is empty or full to prevent executing operations that would be meaningless in an abstract sense or potentially cause system crashes in a real implementation.
 
 ## Now yes, on implementation details
 
-In this example we are going to implement the stack using an a simple array.
+In this example, we will implement the stack using a simple array.
 
-Resizing our underlying array at runtime will be out of the scope of the current example.
+Note that resizing our underlying array at runtime will be beyond the scope of the current example.
 
-For the implementation we will support the following operations:
+For our implementation, we will support the following operations:
 
 1. Create a stack
 2. Destroy the stack
@@ -64,7 +55,7 @@ For the implementation we will support the following operations:
 6. Check if the stack is full
 7. Check if the stack is empty
 
-To begin, lets create a headers file that will define or act as our interface:
+To start, let's create a _headers_ file that will serve as our interface:
 
 ```c
 // stack.h
@@ -88,15 +79,15 @@ bool Push(Stack* stack, int32_t item);
 bool Pop(Stack* stack, int32_t* poppedItem);
 ```
 
-At the top, we are including all the libs we will need.
+At the top, we include all the necessary libraries that we will need.
 
-Then we are defining the struct that will act as our stack, inside it has just three things:
+Then we are defining the struct that will act as our stack. Inside this struct, we have three components:
 
 - `collection`, which is a pointer to a place in memmory that will be alocated for the underlying array.
-- `capacity`, which will store a unsigned int that indicates the number of elements that our array can contain.
-- `size`, which will keep track of the actual number of elements that we have in our stack
+- `capacity`, which will store a unsigned integer that indicates the maximum number of elements that our array can hold.
+- `size`, which will keep track of the actual number of elements that the stack contains.
 
-Then, at the botom we have the signatures of the functions we will create to interact with the stack.
+Finally, at the bottom, we present the function signatures for the operations that will enable us to interact with the stack.
 
 ### 1. Create a stack
 

@@ -1,1 +1,1 @@
-# Checkin if braces are balanced in a string using a stack
+# Checking if braces are balanced in a string using a stack

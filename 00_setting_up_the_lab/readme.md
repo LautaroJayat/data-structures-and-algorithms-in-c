@@ -1,10 +1,3 @@
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=sociale&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lautaro-jayat/)
-[![GitHub watchers](https://img.shields.io/github/watchers/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Watch)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/watchers/)
-[![GitHub forks](https://img.shields.io/github/forks/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Fork)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/network/)
-[![GitHub stars](https://img.shields.io/github/stars/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Star)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/stargazers/)
-
-[<- go back](../README.md)
-
 # Setting up the lab
 
 ## GCC
@@ -48,10 +41,10 @@ FROM debian:latest
 # 2. update the package manager
 RUN apt update -y
 
-#3. install this package that contains GCC and everything we would need for this project
+# 3. install this package that contains GCC 
+#    and everything we would need for this project
 RUN apt install build-essential -y
 ```
-
 
 This content can be placed inside a file named "Docker".
 
@@ -67,7 +60,7 @@ Now we have a Docker image that we can refer to using the tag "clab," which repr
 To run this container, simply type:
 
 ```bash
-docker run -v $(pwd)/:/app -it clab 
+docker run -v $(pwd)/:/app -it clab
 ```
 
 The `-it` flag will instruct Docker to attach an interactive terminal to the container, enabling us to continue working inside the container. This allows us to operate within the container context, akin to being inside the matrix.
