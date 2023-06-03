@@ -9,26 +9,23 @@
 
 ## GCC
 
-There are lot of ways one can start developing and compiling C.
-On one hand, one could try using an IDE like Vistual Studio or Visual Studio Code plus some extensions.
-On the other hand, one could just go and use the good old GCC and some other free and open sourced tools that works super well. The only drawback of this last approach is that GCC migth not work in all operative systems because they could lack some tools or libraries.
-Nonetheless, there are some super simple solutions for this.
+There are numerous ways to start developing and compiling C. On one hand, you could consider using an IDE like Visual Studio or Visual Studio Code, along with some helpful extensions. On the other hand, you can opt for the reliable combination of GCC and other free and open-source tools, which perform exceptionally well. However, it's worth noting that this latter approach may not be compatible with all operating systems due to potential missing tools or libraries. Nevertheless, there are simple and effective solutions available for this issue
 
-GCC stands for GNU Compiler Collection it helps to deal with compiling several languages. As they put in [their official website](https://gcc.gnu.org/):
+GCC, short for GNU Compiler Collection, is a versatile tool for compiling various programming languages. According to [the official website](https://gcc.gnu.org/):
 
 > The GNU Compiler Collection includes front ends for C, C++, Objective-C, Fortran, Ada, Go, and D, as well as libraries for these languages (libstdc++,...).
 
-The easiest approach to start using it in a isolated environment, without breaking anything or having to install lot of things that one may not trust is to make use of Docker and virtualize the whole thing.
+The easiest way to get started with GCC in a controlled environment, without risking any conflicts or having to install multiple components that may raise concerns, is to utilize Docker and virtualize the entire setup.
 
 ## Installing Docker
 
-We usually say "Docker" to refer a tool or a set of tools that let us build, run, and manage containers.
+We typically use the term "Docker" to refer to a tool or a collection of tools that enable us to build, run, and manage containers.
 
-Also, we usually say "containers" to refeer to an implementation of some kind of virtualization technology that allows to isolate environments and processes as if they were separate machines with their own operative systems, programs, configurations, and so on.
+Likewise, we commonly use the term "containers" to denote an implementation of virtualization technology that allows us to isolate environments and processes, simulating separate machines with their own operating systems, programs, configurations, and more.
 
-To install Docker the best guides can be found in [their official website](https://www.docker.com/).
+For installing Docker, the best guides can be found on [their official website](https://www.docker.com/).
 
-I would suggest to instal only the CLI tools, but Docker Desktop is fine too. Here are some helpful resources to do it.
+I would recommend installing only the CLI tools, although Docker Desktop is also a suitable option. Here are some useful resources to assist you with the installation process:
 
 - [Mac installation](https://docs.docker.com/desktop/install/mac-install/)
 - [Windows installation](https://docs.docker.com/desktop/install/windows-install/)
@@ -36,7 +33,7 @@ I would suggest to instal only the CLI tools, but Docker Desktop is fine too. He
 
 ## Creating a container that has all what we need
 
-Using docker migth be tricky at the begining, but if you have seen [The Matrix](https://en.wikipedia.org/wiki/The_Matrix) you will get it quite quickly.
+Using Docker might be tricky at the beginning, but if you've seen [The Matrix](https://en.wikipedia.org/wiki/The_Matrix), you'll grasp it quite quickly.
 
 The main task here is to create this virtual world. It should look like a Debian machine, having all the tooling we need.
 
@@ -55,30 +52,31 @@ RUN apt update -y
 RUN apt install build-essential -y
 ```
 
-This content can be placed inside a file named Docker.
 
-Then we need to open a terminal in the same folder where we have previously placed our Dockerfile, so we can build this container image from the instructions above:
+This content can be placed inside a file named "Docker".
+
+Next, we should open a terminal in the same folder where we have previously placed our Dockerfile. This will allow us to build the container image based on the instructions provided above:
 
 ```bash
 # hey docker, please build the Dockerfile in this folder and tag it with "clab"
 docker build -t clab .
 ```
 
-Now we have a docker image that we can make reference to by the tag "clab", our lab to perform experiments with the C language.
+Now we have a Docker image that we can refer to using the tag "clab," which represents our lab for conducting experiments with the C language.
 
-To run this container we can type:
+To run this container, simply type:
 
 ```bash
 docker run -v $(pwd)/:/app -it clab 
 ```
 
-The `-it` flag will instruct docker to attach a interactive terminal to the container, which will allow us to continue working inside the container. This means, in the container context (inside the matrix).
+The `-it` flag will instruct Docker to attach an interactive terminal to the container, enabling us to continue working inside the container. This allows us to operate within the container context, akin to being inside the matrix.
 
-The `-v $(pwd)/:/app` part is instructing docker to map your current working directory of your host (the real world) inside a folder in the container that should be placed at `/app`.
+The `-v $(pwd)/:/app` portion instructs Docker to map the current working directory of your host (the real world) to a folder inside the container located at `/app`.
 
-You will notice that your terminal has changed it's colors, and now you are logged as `root`.
+You will observe a change in the terminal's color scheme, indicating that you are now logged in as `root`.
 
-To check we can start playing with GCC, just ask it to provide it's version.
+To verify, let's start experimenting with GCC by requesting its version.
 
 ```bash
 gcc --version
@@ -90,12 +88,12 @@ gcc --version
 
 ## How to use this container
 
-I wll suggest to create a folder for each example, and start the docker container there.
+I suggest creating a folder for each example and starting the Docker container from there.
 
-Then, just move to the `/app` folder in the container by typing `cd /app`.
+Then, navigate to the `/app` folder inside the container by using the command `cd /app`.
 
-Keep in mind that you can use your text editor of preference to create or modify files in your project folder, in the real world, in your host. All changes will be visible inside your host.
+Keep in mind that you can use your preferred text editor to create or modify files in your project folder on your host machine. All changes made in this "real world" context will be visible and reflected inside the container.
 
-This way you can write as usual but perform the compilations in your isolated environment.
+This way, you can write code as usual, while performing compilations within the isolated environment provided by Docker.
 
 :)
