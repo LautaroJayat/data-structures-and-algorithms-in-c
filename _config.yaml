@@ -4,8 +4,8 @@ author:
 
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
-
-
+description: >
+  Just an overview on data structures an algorithms while playing with the C programming language
 # Build settings
 
 remote_theme: jekyll/minima
