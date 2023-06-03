@@ -4,6 +4,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/lautarojayat/data-structures-and-algorithms-in-c.svg?style=social&label=Star)](https://GitHub.com/lautarojayat/data-structures-and-algorithms-in-c/stargazers/)
 
 # An overview of data structures and algorithms in C
+[*This is a work in progress, none of these articles were fully corrected or edited*}
 
 When starting out in programming, it is common to perceive certain aspects or behaviors as 'magical'.
 
