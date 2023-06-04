@@ -3,7 +3,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {%- if page.title -%}
-        <meta property="og:title" name="custom og title form page" content="{{ my_page.title | escape }}">
+        <meta property="og:title" name="custom og title form page" content="{{ page.title | escape }}">
         {% else %}
         <meta property="og:title" name="default og title" content="An overview of data structures and algorithms in C">
     {%- endif -%}
