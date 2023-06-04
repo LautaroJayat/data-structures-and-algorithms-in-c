@@ -1,5 +1,13 @@
 # Setting up the lab
 
+Table of contents
+
+- [GCC](#gcc)
+- [Installing Docker](#installing-docker)
+- [Creating a container that has all what we need](#creating-a-container-that-has-all-what-we-need)
+
+- [How to use this containers](#how-to-use-this-container)
+
 ## GCC
 
 There are numerous ways to start developing and compiling C. On one hand, you could consider using an IDE like Visual Studio or Visual Studio Code, along with some helpful extensions. On the other hand, you can opt for the reliable combination of GCC and other free and open-source tools, which perform exceptionally well. However, it's worth noting that this latter approach may not be compatible with all operating systems due to potential missing tools or libraries. Nevertheless, there are simple and effective solutions available for this issue
@@ -41,7 +49,7 @@ FROM debian:latest
 # 2. update the package manager
 RUN apt update -y
 
-# 3. install this package that contains GCC 
+# 3. install this package that contains GCC
 #    and everything we would need for this project
 RUN apt install build-essential -y
 ```
