@@ -1,6 +1,5 @@
 # An overview of data structures and algorithms in C
 
-![A cool monkey learning how to code](./the_monkey.png)
 [_This is a work in progress, none of these articles were fully corrected or edited_]
 
 When starting out in programming, it is common to perceive certain aspects or behaviors as 'magical'.
@@ -59,3 +58,6 @@ Keep in mind I'm not a C expert nor I know all the conventions for this language
 I will strive to keep all the examples and the source as _correct_ as I can.
 
 Also, If you read something odd, you can [make a PR](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/pulls) or [fill an issue](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/issues) in the [github repo](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c).
+
+
+![A cool monkey learning how to code](./the_monkey.png)
