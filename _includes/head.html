@@ -2,6 +2,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {%- if my_page.title -%}
+        <meta property="og:title" name="custom og title form page" content="{{ my_page.title | escape }}">
+        {% else %}
+        <meta property="og:title" name="default og title" content="An overview of data structures and algorithms in C">
+    {%- endif -%}
     <meta property="og:description"
         content="Just an overview on data structures an algorithms while playing with the C programming language">
     <meta property="og:image"
@@ -13,7 +18,6 @@
     {%- seo -%}
     <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
     {%- feed_meta -%}
-    {%- include custom-head.html -%}
     <style>
         .highlight .c1, .highlight .c {
             color: #68a410
