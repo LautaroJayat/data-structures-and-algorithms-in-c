@@ -1,4 +1,6 @@
 # An overview of data structures and algorithms in C
+
+![A cool monkey learning how to code](./the_monkey.png)
 [_This is a work in progress, none of these articles were fully corrected or edited_]
 
 When starting out in programming, it is common to perceive certain aspects or behaviors as 'magical'.
