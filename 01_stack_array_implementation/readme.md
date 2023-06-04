@@ -1,5 +1,18 @@
 # Implementing a stack using a simple array
 
+Table of contents
+
+- [The stack as an abstract data structure](#the-stack-as-an-abstract-data-structure)
+- [Now yes, on implementation details](#now-yes-on-implementation-details)
+  1. [Create a stack](#1-create-a-stack)
+  2. [Destroy a stack](#2-destroy-the-stack)
+  3. [Check if the stack is full](#3-check-if-the-stack-is-full)
+  4. [Put an element at the top of the stack](#4-put-an-element-at-the-top-of-the-stack)
+  5. [Check if the stack is empty](#5-check-if-the-stack-is-empty)
+  6. [remove the element at the top of the stack](#6-remove-the-element-at-the-top-of-the-stack)
+  7. [Peek the element at the top of the stack but without removing it](#7-peek-the-element-at-the-top-of-the-stack-but-without-removing-it)
+- [Creating some tests](#creating-some-tests)
+
 ## The stack as an abstract data structure
 
 Thinking abstract, it acts as a container that preserves the order of elements in the way they were added.
@@ -295,9 +308,9 @@ To test the happy path we will do the following:
 ```c
 void _testHappyPath(uint32_t capacity) {
     Stack* stack = CreateNewStack(capacity);
-    
+
     // we could also assert(stack != NULL) here
-    
+
     int32_t i;
     // we loop and assign the index to each position
     for (i = 0; i < capacity; i++) {
@@ -305,19 +318,19 @@ void _testHappyPath(uint32_t capacity) {
     }
     // we check if it is full
     assert(Is_Full(stack) == true);
-    
+
     int32_t j;
     bool result;
-    
+
     // we loop again while popping each element
     for (i = 0; i < capacity; i++) {
         result = Pop(stack, &j);
-        
+
         // we check if the value is the the expected one
         // using capacity - 1 - i, because we are going from
         // the biggest element to the lowest element
         assert(j == capacity - 1 - i);
-        
+
         // and we also check if each operation succeeded
         assert(result == true);
     }
