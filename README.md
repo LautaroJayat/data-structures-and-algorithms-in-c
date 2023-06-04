@@ -1,6 +1,6 @@
 # An overview of data structures and algorithms in C
 
-[_This is a work in progress, none of these articles were fully corrected or edited_]
+_keep in mind this is a work in progress_
 
 When starting out in programming, it is common to perceive certain aspects or behaviors as 'magical'.
 
