@@ -6,5 +6,8 @@
         "__bit_reference": "c",
         "__split_buffer": "c",
         "vector": "c"
-    }
+    },
+    "cSpell.words": [
+        "struct"
+    ]
 }
