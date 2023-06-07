@@ -15,11 +15,11 @@ Table of contents
 
 ## The stack as an abstract data structure
 
-Thinking abstract, it acts as a container that preserves the order of elements in the way they were added.
+Conceptually, the stack acts as a container that preserves the order of elements in the same sequence they were added.
 
-To remove an element, one can only take the last element that was placed there, which is known as the element at the top of the stack.
+When removing an element, one can only retrieve the last element placed on the stack, commonly referred to as the element at the top.
 
-The fundamental operations are typically referred to as **Push**, which adds an element to the stack, and **Pop**, which retrieves the last element.
+The fundamental operations are commonly known as **Push**, which adds an element to the stack, and **Pop**, which retrieves the last element.
 
 The order in which elements are placed into or removed from the stack is commonly known as "**last in, first out**" or **LIFO**.
 
@@ -46,11 +46,11 @@ To illustrate the idea:
 [ X , Y ] # --> and you got Z because it was the latest element placed in there.
 ```
 
-Apart from the fundamental operations, there are other operations that can be performed on a stack, commonly referred to as non-essential operations.
+In addition to the fundamental operations, there are additional operations that can be performed on a stack, commonly referred to as non-essential operations.
 
-One such operation is called **Peek**, which allows us to observe the last element added to the stack without removing it. Although this behavior can be achieved by temporarily removing the element and subsequently adding it back to the top of the stack, it is not considered essential.
+One such operation is called **Peek**, which allows us to observe the last element added to the stack without removing it. As this behavior can be achieved by temporarily removing the element and subsequently adding it back to the top of the stack, it is not considered essential.
 
-Similarly, as other examples of non essential operations, we can also check whether the stack is empty or full to prevent executing operations that would be meaningless in an abstract sense or potentially cause system crashes in a real implementation.
+Similarly, other examples of non essential operations includes checking whether the stack is empty or full. These checks could serve to prevent executing operations that migth cause system crashes in a real implementation.
 
 ## Now yes, on implementation details
 
@@ -104,11 +104,11 @@ Finally, at the bottom, we present the function signatures for the operations th
 
 ### 1. Create a stack
 
-By having a function that takes care of the whole process of creating the stack, we can isolate the implementation details of the instantiation process.
+By encapsulating the stack creation process within a dedicated function, we can isolate the implementation details associated with instantiating the stack.
 
-This practice can help us debug some problems because the whole process is always done the same, and the code is in always in one place. Also, this may prevent ourselves of "manually" allocating memory, casting pointers, and doing the whole set up for each Stack, which adds more cognitive load to the code, and more places where we can introduce errors.
+This practice offers several benefits. Firstly, it aids in debugging as the entire process remains consistent and centralized in one place. Additionally, it allows us to avoid the manual allocation of memory, casting pointers, and the repetitive setup required for each stack instance. This reduces cognitive load and minimizes the potential for introducing errors in multiple locations.
 
-Lets see how we are implementing it, please find a little guidance on the comments:
+Let's explore the implementation approach with some guidance provided in the comments:
 
 ```c
 // We will receive an integer representing the number of elements we want to store
@@ -152,15 +152,16 @@ Stack* CreateNewStack(uint32_t capacity) {
 }
 ```
 
-The key here is to check if the memory was allocated correctly. This is what will might change the flow of our program and allow us to clean anything we might need.
+The crucial aspect here is to verify whether the memory allocation was successful. This is what will might change the flow of our program and enables us to properly clean up any necessary resources.
 
 ### 2. Destroy the stack
 
-Destroying the stack is to free al memory allocated for this stack and, depending on the chosen semantics, returning a null pointer so the caller can replace what is inside the pointer or delegating our function to make that process.
 
-In our example, we will opt for the last approach.
+Destroying the stack involves freeing all the memory that was allocated for the stack. Depending on the chosen semantics, it may involve returning a null pointer to allow the caller to handle the memory replacement or delegating that responsibility to our function.
 
-Lets see the code, again, please find some guidance in the comments:
+In this example, we will adopt the latter approach.
+
+Lets see the code. Again, please find some guidance in the comments:
 
 ```c
 // we will receive a pointer to the actual pointer that holds the address
@@ -192,18 +193,17 @@ void DestroyStack(Stack** stackp) {
 }
 ```
 
-Is worth to notice that we are freeing the memory in the inverse order it was allocated:
-
+It is worth noting that we are freeing the memory in the reverse order of its allocation:
 1. first the underlying array
 2. then the stack
 
-If we did it in the same order it was allocated we would free the stack and loose the reference to where the array was placed.
+If we were to free the memory in the same order it was allocated, we would end up freeing the stack and losing the reference to the location where the array was stored.
 
 ### 3. Check if the stack is full
 
-Before putting an element in the array, is a good idea to know if we are out of space. If we are not checking that, we might corrupt memory that may be used by other part of the program. And that wouldn't be nice.
+Before adding an element to the array, it is advisable to check if we have sufficient space available. Neglecting this step could potentially corrupt memory that might be used by other parts of the program, which would lead to undesirable consequences.
 
-The code is trivial, but it assume we are keeping track of the number of elements in the stack. The operation just checks if the size is less than the capacity, and return a boolean to the caller context.
+The code for this check is trivial and it assumes that we are maintaining a record of the number of elements in the stack. The operation simply verifies if the size is equal to the capacity and returns a boolean value to the caller's context.
 
 ```c
 bool Is_Full(Stack* stack) {
@@ -213,9 +213,8 @@ bool Is_Full(Stack* stack) {
 
 ### 4. Put an element at the top of the stack
 
-To put an element at the top of the stack is very straightforward.
-For this example, we are assuming that the position of the last element is in the position `size - 1`.
-Then, the rest is simple as the following snippet:
+Putting an element at the top of the stack is a straightforward process.
+In our implementation example, we assume that the position of the last element is at index `size - 1`. The remaining steps can be achieved with the following code snippet:
 
 ```c
 // We receive a pointer to the stack we will be working with
@@ -240,9 +239,9 @@ bool Push(Stack* stack, int32_t item) {
 
 ### 5. Check if the stack is empty
 
-Similar to the Push operation, before popping an element, is a good practice to check if there is something to pop.
+Similar to the Push operation, it is good practice to check if there is an element to pop before performing the operation.
 
-The implementation is pretty simple, we just need to check if the size is zero.
+The implementation is quite simple; we only need to check if the size is zero.
 
 ```c
 bool Is_Empty(Stack* stack) {
@@ -252,12 +251,11 @@ bool Is_Empty(Stack* stack) {
 
 ### 6. Remove the element at the top of the stack
 
-Popping an element is pretty similar to pushing one. For our implementation we made two decisions:
+Popping an element is quite similar to pushing one. In our implementation, we have made two decisions:
 
-First, we wont be returning the element, we will return if the operation was successful or not. The value of the popped element will be stored in a pointer to an integer that the caller is passing us as the second argument in our function.
+First, we will not be returning the popped element itself; instead, we will return a boolean value indicating whether the operation was successful or not. The value of the popped element will be stored in an pointer to an integer that the caller passes to us as the second argument of our function.
 
-Second, we wont be "cleaning" or setting a "zero value" in the position of the element we have stored. We could do it, but, as we have used `malloc`, none of the original elements are zeros.
-If we were to sore some sensitive data, we could do it, tho.
+Second, we will not be "cleaning" or setting a "zero value" in the position of the popped element. Although we could do it, in our case, since we used `malloc` to reserve space for the underlying array, none of the original elements are zeros. However, if we were storing sensitive data, it would be advisable to perform such cleaning.
 
 ```c
 // They give us the pointer to the stack and a place
@@ -282,8 +280,9 @@ Remember: we are decreasing the size of the array before getting the item becaus
 
 ### 7. Peek the element at the top of the stack but without removing it
 
-Peeking is the same as popping, but we are not decreasing, nor cleaning anything
+Peeking is essentially the same as popping, with the difference that it does not decrease the size of the stack or clean any elements.
 
+In other words, peeking allows us to observe the topmost element of the stack without removing it or modifying the stack in any way.
 ```c
 // All the same operations as in the example above
 bool Peek(Stack* stack, int32_t* peekedItem) {
