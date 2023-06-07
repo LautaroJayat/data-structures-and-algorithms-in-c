@@ -12,6 +12,7 @@ Table of contents
   6. [remove the element at the top of the stack](#6-remove-the-element-at-the-top-of-the-stack)
   7. [Peek the element at the top of the stack but without removing it](#7-peek-the-element-at-the-top-of-the-stack-but-without-removing-it)
 - [Creating some tests](#creating-some-tests)
+- [Source Code](../01_stack_array_implementation)
 
 ## The stack as an abstract data structure
 
