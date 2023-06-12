@@ -7,7 +7,7 @@ Node* CreateNewNode() {
     return (Node*)malloc(sizeof(Node));
 }
 
-void InsertToHead(Node** pointerToHead, int32_t number)
+void InsertToHead(Node** pointerToHead, uint32_t number)
 {
     Node* newNode = CreateNewNode();
     newNode->data = number;
@@ -15,7 +15,7 @@ void InsertToHead(Node** pointerToHead, int32_t number)
     *pointerToHead = newNode;
 };
 
-int InsertAtNthPosition(Node** head, int32_t number, int32_t position) {
+int InsertAtNthPosition(Node** head, int32_t number, uint32_t position) {
     if (head == NULL) {
         return 1;
     }
@@ -26,7 +26,7 @@ int InsertAtNthPosition(Node** head, int32_t number, int32_t position) {
 
     int32_t i;
     Node* prevNode = *head;
-    for (i = 0; i < position - 1; i++) {
+    for (i = 1; i < position; i++) {
         prevNode = prevNode->next;
     }
     Node* newNode = CreateNewNode();
@@ -36,12 +36,11 @@ int InsertAtNthPosition(Node** head, int32_t number, int32_t position) {
     return 0;
 }
 
-int RemoveFromNthPosition(Node** head, int32_t position) {
+int RemoveFromNthPosition(Node** head, uint32_t position) {
     if (*head == NULL) {
         return 1;
     }
 
-    //Node* prevNode = head;
     Node* toDelete;
     if (position == 0) {
         toDelete = *head;
@@ -49,7 +48,9 @@ int RemoveFromNthPosition(Node** head, int32_t position) {
         free(toDelete);
         return 0;
     }
+
     Node* prevNode = *head;
+
     int32_t i;
     for (i = 0; i < position - 1; i++) {
         if (prevNode->next == NULL) {

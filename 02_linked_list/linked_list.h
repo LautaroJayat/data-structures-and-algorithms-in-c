@@ -11,11 +11,11 @@ typedef struct Node_T
 
 Node* CreateNewNode();
 
-void InsertToHead(Node** head, int32_t number);
+void InsertToHead(Node** head, uint32_t number);
 
-int InsertAtNthPosition(Node** head, int32_t number, int32_t position);
+int InsertAtNthPosition(Node** head, int32_t number, uint32_t position);
 
-int RemoveFromNthPosition(Node** head, int32_t position);
+int RemoveFromNthPosition(Node** head, uint32_t position);
 
 void PrintAll(Node* head);
 
