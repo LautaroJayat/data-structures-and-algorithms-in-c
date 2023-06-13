@@ -12,6 +12,7 @@ D_array* CreateDynamicArray(uint32_t capacity) {
 
     D_array* array = (D_array*)malloc(sizeof(D_array));
     if (array == NULL) {
+        free(collection);
         return NULL;
     }
     array->collection = collection;
