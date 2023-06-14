@@ -9,6 +9,7 @@ Dynamic arrays are similar to static arrays in the sense that they allow easy re
   2. [Destroying a dynamic array](#destroying-a-dynamic-array)
   3. [Pushing to a dynamic array](#pushing-to-a-dynamic-array)
   4. [Popping an element from a dynamic array](#popping-an-element-from-a-dynamic-array)
+- [Testing the happy path](#testing-the-happy-path)
 - [Source code of this example](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/tree/main/03_dynamc_array)
 
 ## Basic operations
@@ -192,5 +193,52 @@ bool Pop(D_array* array, int32_t* returnValue) {
     // And we assign the value so the caller context can make use of it
     *returnValue = array->collection[array->size];;
     return true;
+}
+```
+
+## Testing the happy path
+
+To test the happy path we will do the following:
+
+1. Create a dynamic array and assert it was correctly created.
+2. Push elements until we reach the limit where one more element will trigger the resize operation
+3. Assert the capacity didn't changed
+4. Push one more element and assert the capacity changed
+5. Pop each element and check if it is what we expected
+6. Check if the array is empty
+7. destroy the array and check everything went ok
+
+```c
+// We receive the initial capacity we desire
+void _testHappyPath(uint32_t capacity) {
+    // we create a dynamic array
+    D_array* array = CreateDynamicArray(capacity);
+    // and we check the correct memory alocation
+    assert(array != NULL)
+
+    int32_t i = 0;
+    // we start looping until we reach the half of the array
+    while ((array->size + 1) * 2 < array->capacity) {
+        Push(array, i);
+        i++;
+    }
+    // We asert that the capacity didn't changed
+    assert(array->capacity == capacity);
+
+    // We push another element
+    Push(array, i);
+
+    // Check if the array grew as we wanted
+    assert(array->capacity == capacity * 2);
+    int32_t* returnValue = (int32_t*)malloc(sizeof(int32_t));
+
+    // Now we pop each element
+    while (!IsEmpty(array)) {
+        Pop(array, returnValue);
+        // and we assert is the element we want
+        assert(*returnValue == (int32_t)array->size);
+    }
+    assert(IsEmpty(array) == true);
+    _cleanup(array);
 }
 ```

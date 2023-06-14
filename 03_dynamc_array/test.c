@@ -5,8 +5,8 @@
 #include "dynamic_array.h"
 
 void _cleanup(D_array* array) {
-    //DestroyDynamicArray(&array);
-    //assert(array == NULL);
+    DestroyDynamicArray(&array);
+    assert(array == NULL);
 }
 
 void _testHappyPath(uint32_t capacity) {
