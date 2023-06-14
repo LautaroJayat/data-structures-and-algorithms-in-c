@@ -1,5 +1,12 @@
 # Checking if parentheses are balanced in a string
 
+**Table of contents:**
+
+- [The strategy](#the-strategy)
+- [The Implementation](#the-implementation)
+- [Performing some tests](#performing-some-tests)
+- [Link to the source](../04_check_balanced_braces)
+
 This is an interesting example of how a stack can be used to solve a real problem. If you have programming experience or familiarity with a programming language, you likely have an intuition about what balanced parentheses are. We say that a string has balanced parentheses when each opening parenthesis has a corresponding closing parenthesis in the right position. For example, the following strings are balanced:
 
 ```sh
