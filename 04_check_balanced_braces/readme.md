@@ -5,7 +5,7 @@
 - [The strategy](#the-strategy)
 - [The Implementation](#the-implementation)
 - [Performing some tests](#performing-some-tests)
-- [Link to the source](../04_check_balanced_braces)
+- [Link to the source](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/tree/main/04_check_balanced_braces)
 
 This is an interesting example of how a stack can be used to solve a real problem. If you have programming experience or familiarity with a programming language, you likely have an intuition about what balanced parentheses are. We say that a string has balanced parentheses when each opening parenthesis has a corresponding closing parenthesis in the right position. For example, the following strings are balanced:
 
@@ -190,7 +190,7 @@ bool IsABalancedString(char* input) {
 
 ## Performing some tests
 
-As we have [tested the stack in chapter 01](../01_stack_array_implementation/test.c), we can now focus on testing this checker function.
+As we have [tested the stack in chapter 01](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/blob/main/01_stack_array_implementation/test.c), we can now focus on testing this checker function.
 
 The simplest way is to come up with some correct strings, and other bad strings.
 And then just assert whether they are balanced or not:
