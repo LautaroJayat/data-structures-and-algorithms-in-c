@@ -6,11 +6,11 @@
 
 const int OPEN_BRACE = '(';
 const int CLOSING_BRACE = ')';
-const int END_OF_LINE = 0;
+const int END_OF_STRING = 0;
 
 bool IsABalancedString(char* input) {
     int stringLength = 0;
-    while (input[stringLength] != END_OF_LINE) {
+    while (input[stringLength] != END_OF_STRING) {
         stringLength++;
     }
     if (stringLength == 0) {
