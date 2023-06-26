@@ -7,6 +7,7 @@
 - [What is a hash table?](#what-is-a-hash-table)
 - [A collision resolution strategy](#a-collision-resolution-strategy)
 - [Implementing the hash table](#implementing-the-hash-table)
+- [Linked list related operations](#linked-list-related-operations)
   - [Defining interfaces](#defining-interfaces)
   - [Creating a node](#creating-a-node)
     - [Testing node creation](#testing-node-creation)
@@ -14,6 +15,7 @@
     - [Testing list deletion](#testing-list-deletion)
   - [Removing a node from the list](#removing-a-node-from-the-list)
     - [Testing node removal](#testing-node-removal)
+- [Hash table related operations]()
 
 ## What is a hash table?
 
@@ -51,6 +53,10 @@ Even more, in the design, we can decide how many elements can be stored in a lin
 <br>
 
 # Implementing the hash table
+
+To present this data structure we will first introduce the interfaces we are going to use. Then we will move to the linked list related operations, each of them will have some comments to guide the reader through the code, with also some quick tests to understand how they behave.
+Finally we will move to the hash table related functions, again, with implementation details and some tests.
+The idea is to go from bottom to top, from the lower level to the integration level.
 
 ## Defining interfaces
 
@@ -120,6 +126,12 @@ unsigned int _computeHash(char* key, unsigned int capacity);
 bool _needsToResize(HashTable* hashTable);
 void _resize(HashTable** hashTable);
 ```
+
+## Linked list related operations
+
+We won't be making a compehensive explaination of linked lists, as we have covered this topic in a previoud chapter.
+If you have never heard about this data structure, please follow [this link](../02_linked_list/readme.md).
+Here we will cover just the necessary operations in order to integrate linked lists with in our hash table.
 
 ### Creating a node
 
@@ -396,4 +408,56 @@ void _testRemoveNode() {
 
 If we really want, we could also traverse the list to assert there is no node with the key we wanted to remove.
 
-###
+### Getting a node value
+
+To traverse the linked list and find a value by a key, we will accept a pointer to the head node, and a key. We will validate that those pointers are not null pointers and, if everything went ok, we will loop over each node comparing the input string with each key of each node.
+If we find it, we will create allocate memory for that string and return a pointer to that bufer.
+If not, we will return null.
+A higher scope will be responisble for freeing that memory.
+
+```c
+// We receive a pointer to to the head
+// a pointer to a string
+// and we return a pointer to a copy of the string
+char* GetNodeValue(Node* head, char* key) {
+    // we check if the pointers are valid
+    if (head == NULL) {
+        printf("could not find node because the list was empty\n");
+        return NULL;
+    }
+
+    if (key == NULL) {
+        printf("cant check for node value due to nil key\n");
+        return NULL;
+    }
+    Node* tmp = head;
+
+    // if so, we start iterating over each node
+    // we will stop if the key the same as our input
+    // or if we reach the last
+    while (tmp != NULL && strcmp(tmp->key, key) != 0) {
+        tmp = tmp->next;
+    }
+
+    // at this point, if tmp is null is because we exited the loop
+    // after checking the last node and we didn't find anything
+    if (tmp == NULL) {
+        // so we return
+        return NULL;
+    }
+
+    // if we reach this line, this mean we found something
+    // so we ask for a block of memory of the size we need
+    char* buff = malloc(strlen(tmp->value) * sizeof(char*));
+    // but we exit if we could not allocate that memory
+    if (buff == NULL) {
+        return NULL;
+    }
+    // in the best case scenario we copy the key to our buffer
+    strcpy(buff, tmp->value);
+    // and return the buffer
+    return buff;
+}
+```
+
+## Hash table related operations
