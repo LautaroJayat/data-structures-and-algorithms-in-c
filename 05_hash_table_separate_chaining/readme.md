@@ -1,6 +1,6 @@
 **[WORK IN PROGRESS]**
 
-# Hash Table with spread chaining for colition resolution
+# Hash Table with spread chaining for collision resolution
 
 **Table of contents**
 
