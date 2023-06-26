@@ -9,11 +9,11 @@
 - [Implementing the hash table](#implementing-the-hash-table)
   - [Defining interfaces](#defining-interfaces)
   - [Creating a node](#creating-a-node)
-  - [Testing node creation](#testing-node-creation)
+    - [Testing node creation](#testing-node-creation)
   - [Clearing the list](#clearing-the-list)
-  - [Testing list deletion](#testing-list-deletion)
+    - [Testing list deletion](#testing-list-deletion)
   - [Removing a node from the list](#removing-a-node-from-the-list)
-  - [Testing node removal](#testing-node-removal)
+    - [Testing node removal](#testing-node-removal)
 
 ## What is a hash table?
 
@@ -47,9 +47,12 @@ The approach still implies a linear time complexity for the step where we traver
 
 Even more, in the design, we can decide how many elements can be stored in a linked list or the limit for the ratio between available linked lists and overall elements stored, and resize the whole data structure acordingly.
 
-## Implementing the hash table
+<br>
+<br>
 
-### Defining interfaces
+# Implementing the hash table
+
+## Defining interfaces
 
 Our hash table will consist of a struct containing:
 
@@ -118,7 +121,7 @@ bool _needsToResize(HashTable* hashTable);
 void _resize(HashTable** hashTable);
 ```
 
-#### Creating a node
+### Creating a node
 
 When creating a node we want to check that both the key and the value are a valid pointer to a string, and also that their lengths are withing the bounds we want to handle.
 Then we will allocate memory for the struct, and copy the key and value to the correpsonding fields in the struct.
@@ -160,7 +163,7 @@ Node* CreateNode(char* key, char* value) {
 
 Notice that we are using functions declared in `string.h` for string manipulation. Here we are using `strlen` to get the length of a string, it accepts a pointer to a string and returns a number representing the length. Then we are using `strcpy` to copy a string into a buffer.
 
-#### Testing node creation
+### Testing node creation
 
 To test the function above we will do the following:
 
@@ -203,7 +206,7 @@ void _testNewNode() {
 }
 ```
 
-#### Clearing the list
+### Clearing the list
 
 For clearing the list we will take a pointer to a head node and then iterate over all it's members. Each node will be freed and then the head will be set to NULL.
 To provide feedbak we will return the number of nodes that were removed.
@@ -238,7 +241,7 @@ unsigned int ClearList(Node** headNode) {
 };
 ```
 
-#### Testing list deletion
+### Testing list deletion
 
 A simple test of the happy path can be done by creating a list of an arbitrary number of nodes and then passing the list into our function.
 After that we can assert if the returned value corresponds with the number of nodes we created.
@@ -269,7 +272,7 @@ void _testClearList() {
 }
 ```
 
-#### Removing a node from the list
+### Removing a node from the list
 
 To remove a node from the list we need to access the list by the head node, then we traverse until we reach the key we are looking for.
 When we find it, we free that node and make the previous one point to the node that came after the deleted one.
@@ -325,7 +328,7 @@ bool RemoveNode(Node** headP, char* key) {
 };
 ```
 
-#### Testing node removal
+### Testing node removal
 
 To test if the node removal is working, we will assert for success or failure using the boolean output of our function.
 
@@ -390,3 +393,7 @@ void _testRemoveNode() {
     }
 }
 ```
+
+If we really want, we could also traverse the list to assert there is no node with the key we wanted to remove.
+
+###
