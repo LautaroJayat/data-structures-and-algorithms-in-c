@@ -1,6 +1,6 @@
 **[WORK IN PROGRESS]**
 
-# Hash Table with spread chaining for collision resolution
+# Hash table + spread chaining for collision resolution
 
 **Table of contents**
 
@@ -326,3 +326,67 @@ bool RemoveNode(Node** headP, char* key) {
 ```
 
 #### Testing node removal
+
+To test if the node removal is working, we will assert for success or failure using the boolean output of our function.
+
+```c
+void _testRemoveNode() {
+    // We will use this string for key-values we dont want to delete
+    char notToDelete[] = "do not delete me";
+    // we will use this to mark a node to delete
+    char toDelete[] = "to delete";
+
+    int i;
+    printf("Testing deletion of the last node\n");
+    // We create the head node, this will end up at the tail
+    Node* head = CreateNode(toDelete, toDelete);
+    // we prepend 3 more nodes that we dont want to delete
+    for (i = 1; i < 4; i++) {
+        Node* tmp = head;
+        head = CreateNode(notToDelete, notToDelete);
+        head->next = tmp;
+    };
+    // we decide to remove the last node
+    bool success = RemoveNode(&head, toDelete);
+    // and assert
+    assert(success == true);
+
+    printf("Testing deletion of node in the middle\n");
+    // now we will delete a node in the middle
+    Node* deleteMeNode = CreateNode(toDelete, toDelete);
+    deleteMeNode->next = head;
+    head = deleteMeNode;
+    // and make a sandwich prepending 3 more nodes
+    for (i = 1; i < 4; i++) {
+        Node* tmp = head;
+        head = CreateNode(notToDelete, notToDelete);
+        head->next = tmp;
+    };
+    // we remove the node
+    success = RemoveNode(&head, toDelete);
+    // and everything went OK
+    assert(success == true);
+
+    printf("Testing deletion of the head node\n");
+    // now we prepend one node and delete it
+    deleteMeNode = CreateNode(toDelete, toDelete);
+    deleteMeNode->next = head;
+    head = deleteMeNode;
+    // we try to remove it
+    success = RemoveNode(&head, toDelete);
+    // and everything
+    assert(success == true);
+
+    printf("Testing early return when providing empty lists\n");
+    Node* badPointer = NULL;
+    success = RemoveNode(NULL, toDelete);
+    assert(success == false);
+    success = RemoveNode(&badPointer, toDelete);
+    assert(success == false);
+    while (head != NULL) {
+        Node* tmp = head->next;
+        free(head);
+        head = tmp;
+    }
+}
+```
