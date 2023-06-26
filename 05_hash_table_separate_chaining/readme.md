@@ -1,5 +1,13 @@
 **[WORK IN PROGRESS]**
 
+**TODO**
+* check grammar
+* check style
+* check if it has sense
+* check links
+* rebase onto web branch 
+* re order topics if needed
+
 # Hash table + spread chaining for collision resolution
 
 **Table of contents**
