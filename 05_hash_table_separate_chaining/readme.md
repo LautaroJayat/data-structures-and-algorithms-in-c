@@ -127,6 +127,8 @@ bool _needsToResize(HashTable* hashTable);
 void _resize(HashTable** hashTable);
 ```
 
+<br>
+<br>
 ## Linked list related operations
 
 We won't be making a compehensive explaination of linked lists, as we have covered this topic in a previoud chapter.
@@ -460,4 +462,6 @@ char* GetNodeValue(Node* head, char* key) {
 }
 ```
 
+<br>
+<br>
 ## Hash table related operations
