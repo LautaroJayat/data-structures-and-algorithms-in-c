@@ -17,7 +17,6 @@
 
 ## What is a hash table?
 
-<>
 A hash table can be described as a collection of key value-pairs where:
 
 - each key appears once at most,
