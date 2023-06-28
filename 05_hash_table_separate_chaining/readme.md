@@ -505,3 +505,81 @@ hash(k4) -> 0
     |
   k1-v1
 ```
+
+### Creating a hash table
+
+As we [presented above](#defining-interfaces), our hash table is just a struct contianing an array of pointers to linked lists, and two numbers: one to keep track uf the elements stored and the other to know the array capacity.
+
+Making an instance of this struct is pretty simple, we just provide a number representing a the desired capacity, attempt to allocate all memory needed, and set the defaults as in the following example:
+
+```c
+// we return a pointer to the hash table
+// and accept an int for the capacity
+HashTable* CreateHashTable(unsigned int capacity) {
+    // if capacity is less than an arbitrary number
+    // we set a default capacity
+    if (capacity < 4) {
+        capacity = 10;
+    }
+
+    // we try to allocate an array of pointers to
+    // linked lists head pointers
+    Node** collection = calloc(capacity, sizeof(Node*));
+    // And return if the operation failed
+    if (collection == NULL) {
+        printf("error: could not initialize underlying collection\n");
+        return NULL;
+    }
+    // At this point we can try to allocate the memory for the hash table.
+    HashTable* hashTable = malloc(sizeof(HashTable));
+
+    // If we fail we free the array previously allocated
+    if (hashTable == NULL) {
+        printf("error: could not initialize hash table\n");
+        free(collection);
+        return NULL;
+    }
+
+    // now we set all the fields and return
+    hashTable->collection = collection;
+    hashTable->capacity = capacity;
+    hashTable->storedElements = 0;
+    return hashTable;
+}
+```
+
+### Testing hash table creation
+
+We will make some simple asserts for the previous function.
+What we want to know if is the capacity and the defaults are correctly set:
+
+```c
+void _testCreateHashTable() {
+    // first we create a hash table with a capacity
+    // that is lower than our min accepted value
+    HashTable* hashTable = CreateHashTable(3);
+    // so we expect it to be the default value
+    assert(hashTable->capacity == 10);
+
+    // we free everything
+    free(hashTable->collection);
+    free(hashTable);
+    // and now we create one with an OK capacity
+    hashTable = CreateHashTable(15);
+
+    // and we assert it is using our input
+    // to set this field
+    assert(hashTable->capacity == 15);
+
+    // as a final step we can iterate and see that
+    // all slots are NULL pointers
+    unsigned int i;
+    for (i = 0; i < 15; i++) {
+        assert(hashTable->collection[i] == NULL);
+
+    }
+    // and we clean everything up
+    free(hashTable->collection);
+    free(hashTable);
+}
+```
