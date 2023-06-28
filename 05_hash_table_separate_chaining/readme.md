@@ -1,12 +1,13 @@
 **[WORK IN PROGRESS]**
 
 **TODO**
-* check grammar
-* check style
-* check if it has sense
-* check links
-* rebase onto web branch 
-* re order topics if needed
+
+- check grammar
+- check style
+- check if it has sense
+- check links
+- rebase onto web branch
+- re order topics if needed
 
 # Hash table + spread chaining for collision resolution
 
@@ -137,6 +138,7 @@ void _resize(HashTable** hashTable);
 
 <br>
 <br>
+
 ## Linked list related operations
 
 We won't be making a compehensive explaination of linked lists, as we have covered this topic in a previoud chapter.
@@ -474,3 +476,32 @@ char* GetNodeValue(Node* head, char* key) {
 <br>
 
 ## Hash table related operations
+
+To simplify things we can say that our hash table is just a dynamic aray of pointers to the head of a linked list.
+To determine in which linked list a key-value pair should be stored, we pass the key to a hash function that outputs a number between 0 and the number of slots in our array like in the following conceptual example:
+
+```sh
+# each key maps to a given index
+hash(k1) -> 0
+hash(k2) -> 2
+hash(k3) -> 3
+
+[   0   ,   1   ,   2   ,   3   ,   4   ]
+    |       |       |       |       |
+  k1-v1    NULL   k2-v2   k3-v3    NULL
+```
+
+Then, if a new key maps to an index where the linked list already has a value, we link the new node to it:
+
+```sh
+# a new value maps to an index where
+# the linked list already has a value
+hash(k4) -> 0
+
+# so we bind the new node
+[   0   ,   1   ,   2   ,   3   ,   4   ]
+    |       |       |       |       |
+  k4-v4    NULL   k2-v2   k3-v3    NULL
+    |
+  k1-v1
+```
