@@ -27,6 +27,15 @@
 - [Hash table related operations](#hash-table-related-operations)
   - [Creating a hash table](#creating-a-hash-table)
     - [Testing hash table creation](#testing-hash-table-creation)
+  - [Storing a key-value pair in our hash table](#storing-a-key-value-pair-in-our-hash-table)
+  - [Implementing a simple hash function](#implementing-a-simple-hash-function)
+    - [Testing our hashing function](#testing-our-hashing-function)
+  - [Checking if we need to resize](#checking-if-we-need-to-resize)
+  - [Doing the actual resizing](#doing-the-actual-resizing)
+    - [Testing the resizing](#testing-the-resizing)
+  - [Getting a value from the hash table](#getting-a-value-from-the-hash-table)
+  - [Removing a key-value pair from the hash table](#remving-a-key-value-pair-from-the-hash-table)
+  - [Testing a complete flow](#testing-a-complete-flow)
 
 ## What is a hash table?
 
@@ -746,5 +755,109 @@ bool _needsToResize(HashTable* hashTable) {
 
 ### Doing the actual resizing
 
+To resize our hash table we need to create a new one with a greater capacity, one with more buckets for more linked lists. Then we need to traverse all the lists and, try to it's elements in our new hash table. To ease this whole process we will use the same `Store` method that we implemented for our hash tables.
 
+After all elements were copied to our new hash table, we can free the old one and return a pointer to the new one, so the upper scope can re-assign their references.
+If we fail to allocate all we need, we just need to clean everything up and so the upper scope can re-try.
 
+```c
+// we accept a pointer to a hash table and return a pointer to a hash table
+HashTable* _resize(HashTable* hashTable) {
+    // We store the pointer to avoid mutating parameters
+    HashTable* oldHashTable = hashTable;
+    // we try to allocate memory for the new hash table
+    HashTable* newHashTable = CreateHashTable(oldHashTable->capacity * GROWTH_FACTOR);
+    // And return if we failed
+    if (newhashtable == NULL){
+        return NULL
+    }
+
+    unsigned int i;
+    bool success = true;
+    // then we will loop over all linked lists
+    for (i = 0; i < oldHashTable->capacity; i++) {
+        Node* currentNode = oldHashTable->collection[i];
+        // And for each linked list, we will loop for all its nodes
+        while (currentNode != NULL) {
+            // we will try to store the node in the new linked lists
+            // while keeping track if we succeeded
+            success = Store(&newHashTable, currentNode->key, currentNode->value);
+            // we return if there was a problem
+            if (!success) break;
+            // and continue with the next node if everything went ok
+            currentNode = currentNode->next;
+        }
+        // if we exited the while loop with an error, we stop the outer loop too
+        if (!success) {
+            printf("error: could not complete sesizing\n");
+            break;
+        }
+    }
+
+    // if we succeeded we can clear the old hash table
+    if (success) {
+        int i;
+        for (i = 0; i < oldHashTable->capacity; i++) {
+            ClearList(&hashTable->collection[i]);
+        }
+        free(oldHashTable->collection);
+        free(oldHashTable);
+        printf("success!!\n");
+        return newHashTable;
+    }
+    printf("cleaning up after resizing attempt\n");
+    // at this point we know we failed and we need to clean the new hash table
+    for (i = 0; i < newHashTable->capacity; i++) {
+        Node* currentNode = newHashTable->collection[i];
+        while (currentNode != NULL) {
+            Node* tmp = currentNode->next;
+            free(currentNode);
+            currentNode = tmp;
+        }
+    }
+    free(newHashTable->collection);
+    free(newHashTable);
+    return NULL;
+};
+```
+
+### Testing the resizing
+
+We will do a small check just to know if the resizing is being performed.
+For this, we will attempt to store fifty key-value pairs and then check y if the capacity was changed.
+
+```c
+void _testResizing() {
+    // we create a buffer for our strings
+    char input[256];
+    // initialize some ints
+    int i, INITIAL_CAP;
+    INITIAL_CAP = 5;
+    // create a little hash table
+    HashTable* hashTable = CreateHashTable(INITIAL_CAP);
+    // and assert the initial conditions
+    assert(hashTable->capacity == INITIAL_CAP);
+    // then we procedurally create some key-values
+    // and try to store them in the hash table
+    for (i = 0; i < 50; i++) {
+        sprintf(input, "string_%d", i);
+        bool success = Store(&hashTable, input, input);
+        assert(success == true);
+    }
+    // at this point the capacity should be pretty higher
+    // than te initial one
+    assert(hashTable->capacity > INITIAL_CAP);
+    // finally we clean everything up
+    for (i = 0; i < hashTable->capacity; i++) {
+        ClearList(&hashTable->collection[i]);
+    }
+    free(hashTable->collection);
+    free(hashTable);
+}
+```
+
+### Getting a value from the hash table
+
+### Remving a key-value pair from the hash table
+
+### Testing a complete flow

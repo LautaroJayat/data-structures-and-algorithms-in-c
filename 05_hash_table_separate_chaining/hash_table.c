@@ -128,6 +128,7 @@ unsigned int _computeHash(char* key, unsigned int capacity) {
     }
     return hash;
 }
+
 bool _needsToResize(HashTable* hashTable) {
     float ratio = (float)(hashTable->storedElements + 1) / (float)hashTable->capacity;
     if (ratio > (float)1.5) {
@@ -226,8 +227,6 @@ bool Store(HashTable** hashTableP, char* key, char* value) {
     hashTable->storedElements += 1;
     return true;
 }
-
-
 
 char* Get(HashTable* hashTable, char* key) {
     if (hashTable == NULL || key == NULL || strlen(key) == 0) {
