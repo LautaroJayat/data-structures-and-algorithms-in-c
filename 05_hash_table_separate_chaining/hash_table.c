@@ -30,9 +30,9 @@ unsigned int ClearList(Node** headNode) {
     Node* tmp;
     unsigned int deletedNodes = 0;
     while (head != NULL) {
-        tmp = head->next;
-        free(head);
-        head = tmp;
+        tmp = head;
+        head = head->next;
+        free(tmp);
         deletedNodes++;
     }
     *headNode = NULL;
@@ -52,6 +52,7 @@ bool RemoveNode(Node** headP, char* key) {
         free(currentNode);
         return true;
     }
+
     Node* nextNode = currentNode->next;
 
     while (nextNode != NULL) {
@@ -119,24 +120,24 @@ HashTable* CreateHashTable(unsigned int capacity) {
 unsigned int _computeHash(char* key, unsigned int capacity) {
     unsigned int hash = 0;
     unsigned int counter = 0;
-    while (key[counter] != 0) {
-        hash += key[counter];
-        hash = hash * key[counter];
+    unsigned int primeNumber = 31;
+    while (key[counter] != '\0') {
+        hash = (hash * primeNumber) + key[counter];
         hash = hash % capacity;
         counter++;
     }
     return hash;
 }
 bool _needsToResize(HashTable* hashTable) {
-    float ratio = (hashTable->storedElements + 1) / hashTable->capacity;
-    if (ratio > 1.5) {
+    float ratio = (float)(hashTable->storedElements + 1) / (float)hashTable->capacity;
+    if (ratio > (float)1.5) {
         return true;
     }
     return false;
 };
 
-void _resize(HashTable** hashTable) {
-    HashTable* oldHashTable = *hashTable;
+HashTable* _resize(HashTable* hashTable) {
+    HashTable* oldHashTable = hashTable;
     HashTable* newHashTable = CreateHashTable(oldHashTable->capacity * GROWTH_FACTOR);
 
     unsigned int i;
@@ -145,7 +146,7 @@ void _resize(HashTable** hashTable) {
         Node* currentNode = oldHashTable->collection[i];
 
         while (currentNode != NULL) {
-            success = Store(newHashTable, currentNode->key, currentNode->value);
+            success = Store(&newHashTable, currentNode->key, currentNode->value);
             if (!success) break;
             currentNode = currentNode->next;
         }
@@ -157,10 +158,14 @@ void _resize(HashTable** hashTable) {
     }
 
     if (success) {
+        int i;
+        for (i = 0; i < oldHashTable->capacity; i++) {
+            ClearList(&hashTable->collection[i]);
+        }
         free(oldHashTable->collection);
         free(oldHashTable);
-        *hashTable = newHashTable;
-        return;
+        printf("success!!\n");
+        return newHashTable;
     }
     printf("cleaning up after resizing attempt\n");
     for (i = 0; i < newHashTable->capacity; i++) {
@@ -173,16 +178,25 @@ void _resize(HashTable** hashTable) {
     }
     free(newHashTable->collection);
     free(newHashTable);
+    return NULL;
 };
 
-bool Store(HashTable* hashTable, char* key, char* value) {
-    if (hashTable == NULL || key == NULL || value == NULL) {
+bool Store(HashTable** hashTableP, char* key, char* value) {
+
+    if (hashTableP == NULL || *hashTableP == NULL || key == NULL || value == NULL) {
         printf("error: bad values provided\n");
         return false;
     }
+    HashTable* hashTable = *hashTableP;
     if (_needsToResize(hashTable)) {
         printf("needs to resize\n");
-        _resize(&hashTable);
+        HashTable* newHashTable = _resize(hashTable);
+        if (newHashTable != NULL) {
+            *hashTableP = newHashTable;
+            hashTable = newHashTable;
+        }
+        else printf("error: could not resize hash table, we will try on next Store operation\n");
+
     }
 
     unsigned int position = _computeHash(key, hashTable->capacity);
@@ -209,6 +223,7 @@ bool Store(HashTable* hashTable, char* key, char* value) {
     }
     newNode->next = hashTable->collection[position];
     hashTable->collection[position] = newNode;
+    hashTable->storedElements += 1;
     return true;
 }
 
@@ -231,7 +246,6 @@ bool Remove(HashTable* hashTable, char* key) {
         return false;
     }
     unsigned int position = _computeHash(key, hashTable->capacity);
-    Node* head = hashTable->collection[position];
-    bool success = RemoveNode(&head, key);
+    bool success = RemoveNode(&hashTable->collection[position], key);
     return success;
 };

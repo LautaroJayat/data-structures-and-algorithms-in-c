@@ -24,7 +24,9 @@
     - [Testing list deletion](#testing-list-deletion)
   - [Removing a node from the list](#removing-a-node-from-the-list)
     - [Testing node removal](#testing-node-removal)
-- [Hash table related operations]()
+- [Hash table related operations](#hash-table-related-operations)
+  - [Creating a hash table](#creating-a-hash-table)
+    - [Testing hash table creation](#testing-hash-table-creation)
 
 ## What is a hash table?
 
@@ -113,7 +115,7 @@ The signatures for the functions will be the following ones:
 
 ```c
 HashTable* CreateHashTable(unsigned int capacity);
-bool Store(HashTable* hashTable, char* key, char* value);
+bool Store(HashTable** hashTable, char* key, char* value);
 char* Get(HashTable* hashTable, char* key);
 bool Remove(HashTable* hashTable, char* key);
 ```
@@ -133,7 +135,7 @@ Lastly, there are a couple of more "internal" functions that will also be needed
 ```c
 unsigned int _computeHash(char* key, unsigned int capacity);
 bool _needsToResize(HashTable* hashTable);
-void _resize(HashTable** hashTable);
+HashTable* _resize(HashTable* hashTable);
 ```
 
 <br>
@@ -247,12 +249,12 @@ unsigned int ClearList(Node** headNode) {
     unsigned int deletedNodes = 0;
     // and start a loop that will end when the current node is NULL
     while (head != NULL) {
-        // we store the next node
-        tmp = head->next;
+        // we store the current node ina  tmp variable
+        tmp = head
+        // we assign the next node as the current node
+        head = tmp->next;;
         // free the current node
         free(head);
-        // and assign the next node as the current node
-        head = tmp;
         // and update the counter
         deletedNodes++;
     }
@@ -583,3 +585,166 @@ void _testCreateHashTable() {
     free(hashTable);
 }
 ```
+
+### Storing a key-value pair in our hash table
+
+Now come the part where we start doing nice things with our hash table!
+Keep in mind there are three steps that will be kind of abstract for us now. Those are the steps where we check if we need to resize our hash table, the actual resizing process and the operation where we compute the hash. Those "private" functions will be presented after this part.
+**Node:** Just for presentation propouses, we will test storing, getting and removing values at the end of the article.
+
+For storing a value we need to perform the following flow:
+
+1. check that our provided inputs are valid
+2. check if we need to resize and if so
+3. compute the hash for the key, so we know which linked list should store our value
+4. traverse the list and see if a node with the same key exists, so we know if we need to update it or append a new node
+
+Please find some guidance in the comments:
+
+```c
+// we will return boolean to signal if the process succeeded
+// and receive a pointer to a hash table, a key and a value
+bool Store(HashTable** hashTableP, char* key, char* value) {
+    // if some of the inputs is a NULL pointer, we return
+    if (hashTableP == NULL || *hashTableP || key == NULL || value == NULL) {
+        printf("error: bad values provided\n");
+        return false;
+    }
+    // get our actual pointer in a handy variable
+    HashTable* hashTable = *hashTableP;
+
+    // we check if the hash table needs to be resized
+    // and we do it if so
+    if (_needsToResize(hashTable)) {
+        printf("needs to resize\n");
+        // try to resize
+        HashTable* newHashtable = _resize(&hashTable);
+        if (newHashTable != NULL) {
+            // we replace everything if succeeded
+            *hashTableP = newHashTable;
+            hashTable = newHashTable;
+        } // or print and error if not
+        else printf("error: could not resize hash table, we will try on next Store operation\n");
+    }
+
+    // and now we compute the hash using the capacity of the array
+    // used to store the number of buckets for our linked lists
+    unsigned int position = _computeHash(key, hashTable->capacity);
+
+    // and we get the head node of our hash table
+    Node* head = hashTable->collection[position];
+
+    // we traverse it and check our node key
+    // with the provided key
+    while (head != NULL) {
+        if (strcmp(head->key, key) == 0) {
+            // in case we find a node with the
+            // same key, we exit the loop
+            break;
+        }
+        // if not, we go to the next node
+        head = head->next;
+    }
+
+    // at this point we migth have a node stored in
+    // the "head" variable.
+    if (head != NULL) {
+        // if so, we copy our value to the "value"
+        // field in the found node
+        strcpy(head->value, value);
+        return true;
+    }
+
+    // if we didn't find it, we create a new node
+    Node* newNode = CreateNode(key, value);
+
+    // if the node couldn't be created, we return
+    if (newNode == NULL) {
+        printf("error: could not alocate memory for node\n");
+        return false;
+    }
+    // if everything went ok, we prepend the new node
+    newNode->next = hashTable->collection[position];
+    hashTable->collection[position] = newNode;
+    return true;
+}
+```
+
+### Implementing a simple hash function
+
+Now that we already have the backbones of our hash table, we need a function that receives a key and outputs a number between that could serve us to index the underlying array used to store the references to heads of our linked lists. As we grow the array, we need to be able to update the ranges in which this number should go.
+For our implementation we will be using a simplified version of a [rolling hash strategy](https://en.wikipedia.org/wiki/Rolling_hash), where we iterate over each character, producing a hash, and then using that hash to compute the next one. In each iteration we will be taking the _modulo_ to constrain the bounds where our results can exist.
+
+```c
+// we accept a pointer to where our key lies and
+// a number for the upper limit four our hash
+unsigned int _computeHash(char* key, unsigned int capacity) {
+    // our hash starts with 0
+    unsigned int hash = 0;
+    // as our counter
+    unsigned int counter = 0;
+    // and we select a multiplier
+    unsigned int primeNumber = 31;
+    //then we loop over the string
+    while (key[counter] != '\0') {
+        // we multiply our hash with and add the curren character
+        hash = (hash * primeNumber) + key[counter];
+        // and update the hash
+        hash = hash % capacity;
+        counter++;
+    }
+    // finally we return a number that will be between 0
+    // and our upper limit (which happens to be our array capacity)
+    return hash;
+}
+```
+
+### Testing our hashing function
+
+What we want to test now is if, at least, our function outputs the same values for a given key. We will do a simple test to give us an idea of how consistent the results are when playing with the upper limit for the result, and by reproducing the same hash several times.
+We will make a simple test, this is not a real proof of consistency, neither a proof for homogeneous distribution of the output. Doing that would require a formal (logical and mathemathical) demostration.
+
+```c
+void _testCreateHashConsistency() {
+    // we will use a simple string
+    char* string = "hey, how are you";
+    // and two counters
+    int i, j;
+    // we will compute a hash for 990 different capacities
+    for (j = 10; j < 1000; j++) {
+        unsigned int hash = _computeHash(string, j);
+        // and then generate the hash 100 times
+        for (i = 0; i < 100; i++) {
+            // and check those 100 times we received the same hash
+            assert(hash == _computeHash(string, j));
+        }
+    }
+}
+```
+
+### Checking if we need to resize
+
+The moment where we decide to resize our hashing table is somewhat arbitrary. A common practice is to calculate a ratio between the buckets or linked lists available and the number of elements we have stored in our data structure.
+
+To perform this operation we will accept a hash table and then calculate if one more element would cause the ratio to overpass our selected limit.
+
+```c
+// We return a boolean and accept a hash table
+bool _needsToResize(HashTable* hashTable) {
+    // we calculate the ratio between the actual stored elements plus one
+    // and the current capacity (the number of buckets for our linked lists)
+    // as our numbers were int, we need to cast them to float first
+    float ratio = (float)(hashTable->storedElements + 1) / (float)hashTable->capacity;
+    // if the ratio is greater than 1.5 we know we need to resize
+    if (ratio > (float)1.5) {
+        return true;
+    }
+    // if less, we can continue adding nodes
+    return false;
+};
+```
+
+### Doing the actual resizing
+
+
+

@@ -110,12 +110,10 @@ void _testGetNodeValue() {
         head = CreateNode(aKey, aValue);
         head->next = tmp;
     };
-
     char* result = GetNodeValue(head, targetKey);
     assert(result != NULL);
     assert(strcasecmp(targetValue, result) == 0);
     free(result);
-
     result = GetNodeValue(head, missingKey);
     assert(result == NULL);
     free(result);
@@ -154,12 +152,31 @@ void _testCreateHashConsistency() {
     }
 }
 
+void _testResizing() {
+    char input[256];
+    int i, INITIAL_CAP;
+    INITIAL_CAP = 5;
+    HashTable* hashTable = CreateHashTable(INITIAL_CAP);
+    assert(hashTable->capacity == INITIAL_CAP);
+    for (i = 0; i < 50; i++) {
+        sprintf(input, "string_%d", i);
+        bool success = Store(&hashTable, input, input);
+        assert(success == true);
+    }
+    assert(hashTable->capacity > INITIAL_CAP);
+    for (i = 0; i < hashTable->capacity; i++) {
+        ClearList(&hashTable->collection[i]);
+    }
+    free(hashTable->collection);
+    free(hashTable);
+}
+
 void _testStoreGetAndRemove() {
     char* keys[] = { "key1","key2","key3","key4","key5","key6" };
-    HashTable* hashTable = CreateHashTable(15);
+    HashTable* hashTable = CreateHashTable(5);
     int i;
     for (i = 0; i < 6; i++) {
-        bool success = Store(hashTable, keys[i], keys[i]);
+        bool success = Store(&hashTable, keys[i], keys[i]);
         assert(success == true);
     }
     for (i = 0; i < 6; i++) {
@@ -169,7 +186,7 @@ void _testStoreGetAndRemove() {
     }
     char* defaultValue = "default";
     for (i = 0; i < 6; i++) {
-        bool success = Store(hashTable, keys[i], defaultValue);
+        bool success = Store(&hashTable, keys[i], defaultValue);
         assert(success == true);
     }
     for (i = 0; i < 6; i++) {
@@ -197,6 +214,7 @@ int main(void) {
     _testGetNodeValue();
     _testCreateHashTable();
     _testCreateHashConsistency();
+    _testResizing();
     _testStoreGetAndRemove();
     return 0;
 }

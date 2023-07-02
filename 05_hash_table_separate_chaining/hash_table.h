@@ -30,10 +30,10 @@ char* GetNodeValue(Node* head, char* key);
 
 
 HashTable* CreateHashTable(unsigned int capacity);
-bool Store(HashTable* hashTable, char* key, char* value);
+bool Store(HashTable** hashTable, char* key, char* value);
 char* Get(HashTable* hashTable, char* key);
 bool Remove(HashTable* hashTable, char* key);
 
 unsigned int _computeHash(char* key, unsigned int capacity);
 bool _needsToResize(HashTable* hashTable);
-void _resize(HashTable** hashTable);
+HashTable* _resize(HashTable* hashTable);
