@@ -235,6 +235,7 @@ char* Get(HashTable* hashTable, char* key) {
     }
     unsigned int position = _computeHash(key, hashTable->capacity);
     Node* head = hashTable->collection[position];
+    if (head == NULL) return NULL;
     char* value = GetNodeValue(head, key);
     return value;
 };
@@ -245,6 +246,7 @@ bool Remove(HashTable* hashTable, char* key) {
         return false;
     }
     unsigned int position = _computeHash(key, hashTable->capacity);
+    if (hashTable->collection[position] == NULL) return true;
     bool success = RemoveNode(&hashTable->collection[position], key);
     return success;
 };
