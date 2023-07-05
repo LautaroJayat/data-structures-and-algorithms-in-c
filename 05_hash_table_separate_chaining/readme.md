@@ -858,6 +858,112 @@ void _testResizing() {
 
 ### Getting a value from the hash table
 
+To get a value by it's key, we will check if both the hash table and the key are valid inputs.
+Then we will calculate the hash of the key, so we know in which linked list we should be traversing to find the correct node.
+If the position for that linked list is empty, we know the key is not present in our hash table.
+If we find a linked list in that slot, we delegate the search to our GetNodeValue function.
+
+```c
+//we get a pointer to a hash table, and a pointer to a string
+char* Get(HashTable* hashTable, char* key) {
+    // if the pointers are NULL, or the string is empty, we consider that an error
+    if (hashTable == NULL || key == NULL || strlen(key) == 0) {
+        printf("error: bad values were provided:\n%p\n%s\n%ld\n", hashTable, key, strlen(key));
+        return NULL;
+    }
+    // at this point we can compute the hash
+    unsigned int position = _computeHash(key, hashTable->capacity);
+    // and get the correct linked list
+    Node* head = hashTable->collection[position];
+    // then we check if we need to return
+    if (head == NULL) return NULL;
+    // If not, we delegate the rest of the flow
+    char* value = GetNodeValue(head, key);
+    // and return what the GetNodeValue give us
+    return value;
+};
+```
+
 ### Remving a key-value pair from the hash table
 
+To remove a key-value pair we will perform some checks on the inputs to know they are valid. Then we will calculate the hash and return if there is no linked list asociated with that hash.
+Then, if we find the linked list, we will pass a pointer to a head pointer to our RemoveNode function, so it can remove the node and replace the head if necessary.
+
+```c
+//we get a pointer to a hash table, and a pointer to a string
+bool Remove(HashTable* hashTable, char* key) {
+    // if the pointers are NULL, or the string is empty, we consider that an error
+    if (hashTable == NULL || key == NULL || strlen(key) == 0) {
+        printf("error: bad values were provided:\n%p\n%s\n%ld\n", hashTable, key, strlen(key));
+        return false;
+    }
+    // at this point we can compute the hash
+    unsigned int position = _computeHash(key, hashTable->capacity);
+    // if there is no linked list, we can return
+    if (hashTable->collection[position] == NULL) return true;
+    // if we find a linked list, we delegate the node removal
+    bool success = RemoveNode(&hashTable->collection[position], key);
+    // and output the result
+    return success;
+};
+```
+
 ### Testing a complete flow
+
+Now we get to test a complete flow!
+In it, we will try to:
+
+1. create a hash table
+2. store some key-value pairs
+3. change their values
+4. try to get a value for a non present key
+5. remove a key and hen check it is not present in the hash table
+
+```c
+void _testStoreGetAndRemove() {
+    // we create some keys
+    char* keys[] = { "key1","key2","key3","key4","key5","key6" };
+    // we initialize a hash table
+    HashTable* hashTable = CreateHashTable(5);
+    int i;
+    // we store all the keys
+    for (i = 0; i < 6; i++) {
+        bool success = Store(&hashTable, keys[i], keys[i]);
+        // and check everything went ok
+        assert(success == true);
+    }
+    // then we loop over all the keys and check they have a correct value
+    for (i = 0; i < 6; i++) {
+        char* value = Get(hashTable, keys[i]);
+        assert(strcmp(value, keys[i]) == 0);
+        free(value);
+    }
+    // we create a new expected string for all the values
+    char* defaultValue = "default";
+    // and change the values for all the keys
+    for (i = 0; i < 6; i++) {
+        bool success = Store(&hashTable, keys[i], defaultValue);
+        assert(success == true);
+    }
+    // Then we get all the keys and assert their new values
+    for (i = 0; i < 6; i++) {
+        char* value = Get(hashTable, keys[i]);
+        assert(strcmp(value, defaultValue) == 0);
+        free(value);
+    }
+    // we try to get a value for a non present key
+    assert(Get(hashTable, "missingKey") == NULL);
+    // we remove one key
+    bool success = Remove(hashTable, keys[1]);
+    assert(success == true);
+    // and assert there is no value for it now
+    assert(Get(hashTable, keys[1]) == NULL);
+    // and now we clean everything up
+    for (i = 0; i < hashTable->capacity; i++) {
+        Node* n = hashTable->collection[i];
+        ClearList(&n);
+    }
+    free(hashTable->collection);
+    free(hashTable);
+}
+```
