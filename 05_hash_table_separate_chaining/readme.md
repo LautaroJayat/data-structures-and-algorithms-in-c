@@ -1,15 +1,4 @@
-**[WORK IN PROGRESS]**
-
-**TODO**
-
-- check grammar
-- check style
-- check if it has sense
-- check links
-- rebase onto web branch
-- re order topics if needed
-
-# Hash table + spread chaining for collision resolution
+# Hash table + separate chaining for collision resolution
 
 **Table of contents**
 
@@ -36,47 +25,48 @@
   - [Getting a value from the hash table](#getting-a-value-from-the-hash-table)
   - [Removing a key-value pair from the hash table](#remving-a-key-value-pair-from-the-hash-table)
   - [Testing a complete flow](#testing-a-complete-flow)
+  - [Link to source code](https://github.com/LautaroJayat/data-structures-and-algorithms-in-c/tree/main/05_hash_table_separate_chaining)
 
 ## What is a hash table?
 
-A hash table can be described as a collection of key value-pairs where:
+A hash table can be described as a collection of key-value pairs where:
 
-- each key appears once at most,
-- each key maps to only one value and
-- where a function is used to consistently map the maybe infinite space of possible keys to finite domain of "hash codes" that we can handle.
+- Each key appears at most once.
+- Each key maps to only one value.
+- A function is used to consistently map the potentially infinite space of possible keys to finite domain of "hash codes" that we can handle.
 
-In respect to the third bullet mentioned above, the underlying problem the hash function solves is the following:
+In respect to the third bullet point mentioned above, the underlying problem the hash function solves is as follows:
 
-If have a limited number of keys, and time is not a problem, we could store key-value pairs in a linked list or an array. Then, if we want to look for a value we just traverse the whole colection comparing our input key with each key we have stored.
+If we have a limited number of keys, and time is not a problem, we could store key-value pairs in a linked list or an array. Then, if we want to look for a value, we just traverse the whole collection, comparing our input key with each key we have stored.
 
-Although the approach is simple, it implies that the number of lookups needed to find a value migth grow as the number of keys stored also grow. To avoid this, a function is used so we can convert a key into something that give us a hint on where the key is located in memory without needing to traverse all the collection.
+Although the approach is simple, it implies that the number of lookups needed to find a value might grow as the number of stored keys also grows. To avoid this, a function is used to convert a key into something that gives us a hint about where the key is located in memory, without needing to traverse the entire collection.
 
-The function that makes this work are called "hashing functions".
+The functions that make this work are called "hashing functions."
 
-A useful hashing function should be fast to compute, without wasting too many resources. If not, each lookup may have a consist time but it could be slower than make the whole traversing and comparing approach mentioned above.
+A useful hashing function should be fast to compute without wasting too many resources. If it's not, each lookup may have a consistent time but could be slower than the entire traversing and comparing approach mentioned above.
 
-Also it should minimize the probability of outputing the same value for two different inputs, what is commonly called "collision".
+It should also minimize the probability of outputting the same value for two different inputs, which is commonly called a "collision."
 
-As we just mentioned, we are talking about "minimizing" the collisions and not trying to find a way to avoid them completly. This is because we are mapping an "infinite" set of possible keys to a finte set of possible outputs. Collisions will be inevitable at some point.
+As we just mentioned, we are talking about "minimizing" collisions rather than trying to avoid them completely. This is because we are mapping an infinite set of possible keys to a finite set of possible outputs. Collisions will be inevitable at some point.
 
 ## A collision resolution strategy
 
-Collisions can be minimized but they can not be avoided. This mean we need a way in which we hanlde this collisions.
+Collisions can be minimized, but they cannot be avoided. This means we need a way to handle these collisions.
 
-For this article we have choose to start with what is called "separate chaining", which consist in using a linked list to store all key value pairs where the key maps to the same output after being passed to our hash function. This way, every time we want to store a key value pair, we fisrt compute the hash, then we look for the head node corresponding to that hash and traverse the list comparing each stored key with the inputed key.
+For this article, we have chosen to start with what is called "separate chaining", which consists on using linked lists to store all key-value pairs where different key maps to the same output after being passed to our hash function. This way, every time we want to store a key-value pair, we first compute the hash, then we look for the head node corresponding to that hash and traverse the list, comparing each stored key with the input key.
 
-The approach still implies a linear time complexity for the step where we traverse the whole linked list in search for the provided key, but now the universe of possible keys is reduced to a fraction of the original.
+The approach still implies a linear time complexity for the step where we traverse the entire linked list in search of the provided key, but now the universe of possible keys is reduced to a fraction of the original.
 
-Even more, in the design, we can decide how many elements can be stored in a linked list or the limit for the ratio between available linked lists and overall elements stored, and resize the whole data structure acordingly.
+Furthermore, in the design, we can decide how many elements can be stored in a linked list or the limit for the ratio between available linked lists and overall elements stored, and resize the entire data structure accordingly.
 
 <br>
 <br>
 
 # Implementing the hash table
 
-To present this data structure we will first introduce the interfaces we are going to use. Then we will move to the linked list related operations, each of them will have some comments to guide the reader through the code, with also some quick tests to understand how they behave.
-Finally we will move to the hash table related functions, again, with implementation details and some tests.
-The idea is to go from bottom to top, from the lower level to the integration level.
+To present this data structure, we will first introduce the interfaces we are going to use. Then we will move on to the linked list-related operations. Each of them will have comments to guide the reader through the code, along with some quick tests to understand how they behave.
+
+Finally, we will proceed to the hash table-related functions, providing implementation details and additional tests. The intention is to progress from bottom to top, from the lower level to the integration level.
 
 ## Defining interfaces
 
@@ -94,9 +84,9 @@ typedef struct {
 } HashTable;
 ```
 
-For the collection, we are using this pointer to poinert semantic just to ease the case where we want to change the head of linked list.
+For the collection, we are using a pointer-to-pointer semantic just to simplify the process of changing the head of the linked list.
 
-Then, for the nodes we will use structs containing the following with the following:
+Then, for the nodes, we will use structs containing the following:
 
 - a pointer to where we will store the key
 - a pointer to where we will store the value
@@ -110,7 +100,7 @@ typedef struct Node_T {
 } Node;
 ```
 
-Apart from that, we will define some numbers to constraint the behaviour of the lined list:
+Apart from that, we will define certain numbers to constrain the behavior of the linked list:
 
 ```c
 #define MAX_KEY_LEN 256
@@ -119,8 +109,14 @@ Apart from that, we will define some numbers to constraint the behaviour of the 
 #define GROWTH_FACTOR 2
 ```
 
-For the API of our hash table we will suport creating a hash table, storing a key-value pair, removing a key-value pair, and looking a value for a given key.
-The signatures for the functions will be the following ones:
+For the API of our hash table, we will support the following operations:
+
+- creating a hash table
+- storing a key-value pair
+- removing a key-value pair
+- looking up a value for a given key.
+
+The function signatures for these operations will be as follows:
 
 ```c
 HashTable* CreateHashTable(unsigned int capacity);
@@ -129,8 +125,8 @@ char* Get(HashTable* hashTable, char* key);
 bool Remove(HashTable* hashTable, char* key);
 ```
 
-For convinence we will create a separate set of functions that handles linked list operations such as creating a node, removing a node, getting the value of a node and clearing a whole list.
-The signatures for those functions will be:
+For convenience, we will create a separate set of functions that handle linked list operations such as creating a node, removing a node, getting the value of a node, and clearing a whole list.
+The function signatures for these operations will be as follows:
 
 ```c
 Node* CreateNode(char* key, char* value);
@@ -139,7 +135,7 @@ unsigned int ClearList(Node** headNode);
 char* GetNodeValue(Node* head, char* key);
 ```
 
-Lastly, there are a couple of more "internal" functions that will also be needed for knowing when to resize the hash table, compute the hash, and doing the actual resizing:
+Lastly, there are a couple of additional "internal" functions that will be needed for determining when to resize the hash table, computing the hash, and performing the actual resizing:
 
 ```c
 unsigned int _computeHash(char* key, unsigned int capacity);
@@ -152,15 +148,16 @@ HashTable* _resize(HashTable* hashTable);
 
 ## Linked list related operations
 
-We won't be making a compehensive explaination of linked lists, as we have covered this topic in a previoud chapter.
+We won't be providing a comprehensive explanation of linked lists here, as we have covered this topic in a previous chapter.
 If you have never heard about this data structure, please follow [this link](../02_linked_list/readme.md).
-Here we will cover just the necessary operations in order to integrate linked lists with in our hash table.
+
+Here, we will only cover the necessary operations to integrate linked lists within our hash table.
 
 ### Creating a node
 
-When creating a node we want to check that both the key and the value are a valid pointer to a string, and also that their lengths are withing the bounds we want to handle.
-Then we will allocate memory for the struct, and copy the key and value to the correpsonding fields in the struct.
-At this point, we don't care if the keys already exists in a node of our linked list. That will be handled in a higher scope.
+When creating a node, we want to check that both the key and the value are valid pointers to a string, and also that their lengths are within the bounds we want to handle.
+Then, we will allocate memory for the struct and copy the key and value to the corresponding fields in the struct.
+At this point, we don't care if the keys already exist in a node of our linked list. That will be handled at a higher scope.
 
 ```c
 // We accept the pointers to the strings and return a pointer to a node
@@ -196,11 +193,11 @@ Node* CreateNode(char* key, char* value) {
 };
 ```
 
-Notice that we are using functions declared in `string.h` for string manipulation. Here we are using `strlen` to get the length of a string, it accepts a pointer to a string and returns a number representing the length. Then we are using `strcpy` to copy a string into a buffer.
+Notice that we are using functions declared in `string.h` for string manipulation. Here we are using `strlen` to get the length of a string. It accepts a pointer to a string and returns a number representing the length. Then we are using `strcpy` to copy a string into a buffer.
 
 ### Testing node creation
 
-To test the function above we will do the following:
+To test the function described above we will do the following:
 
 ```c
 void _testNewNode() {
@@ -243,8 +240,8 @@ void _testNewNode() {
 
 ### Clearing the list
 
-For clearing the list we will take a pointer to a head node and then iterate over all it's members. Each node will be freed and then the head will be set to NULL.
-To provide feedbak we will return the number of nodes that were removed.
+To clear the list, we will take a pointer to a head node and then iterate over all its members. Each node will be freed, and then the head will be set to NULL.
+To provide feedback, we will return the number of nodes that were removed.
 
 ```c
 // we receive the pointer of the head node
@@ -278,8 +275,8 @@ unsigned int ClearList(Node** headNode) {
 
 ### Testing list deletion
 
-A simple test of the happy path can be done by creating a list of an arbitrary number of nodes and then passing the list into our function.
-After that we can assert if the returned value corresponds with the number of nodes we created.
+A simple test of the happy path can be done by creating a list with an arbitrary number of nodes and then passing the list into our function.
+After that, we can assert if the returned value corresponds to the number of nodes we created.
 
 ```c
 void _testClearList() {
@@ -309,10 +306,10 @@ void _testClearList() {
 
 ### Removing a node from the list
 
-To remove a node from the list we need to access the list by the head node, then we traverse until we reach the key we are looking for.
-When we find it, we free that node and make the previous one point to the node that came after the deleted one.
-In case the target node is the head node, we just delete the head and assign the next node as the new head.
-In our implementation, we will return a boolean to signal if the process succeeded or not.
+To remove a node from the list, we need to access the list using the head node. Then, we traverse the list until we find the key we are looking for.
+When we find the key, we free that node and make the previous node point to the node that comes after the deleted one.
+If the target node is the head node, we simply delete the head and assign the next node as the new head.
+In our implementation, we will return a boolean value to indicate whether the process succeeded or not.
 
 ```c
 // we accept a pointer to a pointer to the head node
@@ -365,7 +362,7 @@ bool RemoveNode(Node** headP, char* key) {
 
 ### Testing node removal
 
-To test if the node removal is working, we will assert for success or failure using the boolean output of our function.
+To test if the node removal is working, we will assert for success or failure by using the boolean output of our function.
 
 ```c
 void _testRemoveNode() {
@@ -429,14 +426,14 @@ void _testRemoveNode() {
 }
 ```
 
-If we really want, we could also traverse the list to assert there is no node with the key we wanted to remove.
+If desired, we could also traverse the list to assert that there is no node with the key we wanted to remove.
 
 ### Getting a node value
 
-To traverse the linked list and find a value by a key, we will accept a pointer to the head node, and a key. We will validate that those pointers are not null pointers and, if everything went ok, we will loop over each node comparing the input string with each key of each node.
-If we find it, we will create allocate memory for that string and return a pointer to that bufer.
-If not, we will return null.
-A higher scope will be responisble for freeing that memory.
+To traverse the linked list and find a value by a key, we will accept a pointer to the head node and a key. We will validate that those pointers are not null pointers. If everything is fine, we will loop over each node, comparing the input string with each key of each node.
+If we find a match, we will allocate memory for that string and return a pointer to that buffer.
+If no match is found, we will return null.
+It will be the responsibility of a higher scope to free that allocated memory.
 
 ```c
 // We receive a pointer to to the head
@@ -488,8 +485,9 @@ char* GetNodeValue(Node* head, char* key) {
 
 ## Hash table related operations
 
-To simplify things we can say that our hash table is just a dynamic aray of pointers to the head of a linked list.
-To determine in which linked list a key-value pair should be stored, we pass the key to a hash function that outputs a number between 0 and the number of slots in our array like in the following conceptual example:
+To simplify things, we can say that our hash table is essentially a dynamic array of pointers to the head of a linked list.
+To determine in which linked list a key-value pair should be stored, we pass the key to a hash function that outputs a number between 0 and the number of slots in our array.
+Here's a conceptual example:
 
 ```sh
 # each key maps to a given index
@@ -519,9 +517,9 @@ hash(k4) -> 0
 
 ### Creating a hash table
 
-As we [presented above](#defining-interfaces), our hash table is just a struct contianing an array of pointers to linked lists, and two numbers: one to keep track uf the elements stored and the other to know the array capacity.
+As we presented above in the section on [defining interfaces](#defining-interfaces), our hash table is implemented as a struct that contains an array of pointers to linked lists, along with two numbers: one to keep track of the elements stored and the other to indicate the array capacity.
 
-Making an instance of this struct is pretty simple, we just provide a number representing a the desired capacity, attempt to allocate all memory needed, and set the defaults as in the following example:
+Creating an instance of this struct is straightforward. We provide a number representing the desired capacity, attempt to allocate the necessary memory, and set the defaults as shown in the following example:
 
 ```c
 // we return a pointer to the hash table
@@ -561,8 +559,7 @@ HashTable* CreateHashTable(unsigned int capacity) {
 
 ### Testing hash table creation
 
-We will make some simple asserts for the previous function.
-What we want to know if is the capacity and the defaults are correctly set:
+We will include some simple assertions for the previous function. We want to verify if the capacity and defaults are correctly set.
 
 ```c
 void _testCreateHashTable() {
@@ -597,16 +594,17 @@ void _testCreateHashTable() {
 
 ### Storing a key-value pair in our hash table
 
-Now come the part where we start doing nice things with our hash table!
-Keep in mind there are three steps that will be kind of abstract for us now. Those are the steps where we check if we need to resize our hash table, the actual resizing process and the operation where we compute the hash. Those "private" functions will be presented after this part.
-**Node:** Just for presentation propouses, we will test storing, getting and removing values at the end of the article.
+Now we come to the part where we start performing useful operations with our hash table!
+Please note that there are three steps that will be somewhat abstract for us at this point. These steps involve checking if we need to resize our hash table, the actual resizing process, and the operation where we compute the hash. These "private" functions will be presented after this section.
 
-For storing a value we need to perform the following flow:
+**Note:** Just for presentation purposes, we will include tests for storing, getting, and removing values at the end of the article.
+
+To store a value, we need to follow the following flow:
 
 1. check that our provided inputs are valid
-2. check if we need to resize and if so
-3. compute the hash for the key, so we know which linked list should store our value
-4. traverse the list and see if a node with the same key exists, so we know if we need to update it or append a new node
+2. check if we need to resize the hash table, and if so, perform the resizing
+3. Compute the hash for the key to determine which linked list should store our value
+4. Traverse the list and check if a node with the same key exists. If a matching node is found, update its value; otherwise, append a new node to the list.
 
 Please find some guidance in the comments:
 
@@ -681,8 +679,8 @@ bool Store(HashTable** hashTableP, char* key, char* value) {
 
 ### Implementing a simple hash function
 
-Now that we already have the backbones of our hash table, we need a function that receives a key and outputs a number between that could serve us to index the underlying array used to store the references to heads of our linked lists. As we grow the array, we need to be able to update the ranges in which this number should go.
-For our implementation we will be using a simplified version of a [rolling hash strategy](https://en.wikipedia.org/wiki/Rolling_hash), where we iterate over each character, producing a hash, and then using that hash to compute the next one. In each iteration we will be taking the _modulo_ to constrain the bounds where our results can exist.
+NNow, let's focus on the function that takes a key and produces a number that will serve as an index for the underlying array used to store references to the heads of our linked lists. As the array grows, we need to be able to update the range within which this number should fall.
+For our implementation we will be using a simplified version of a [rolling hash strategy](https://en.wikipedia.org/wiki/Rolling_hash) In this strategy, we iterate over each character of the key, producing a hash, and then use that hash to compute the next one. In each iteration, we will take the modulo operation to ensure that our results fall within the desired bounds.
 
 ```c
 // we accept a pointer to where our key lies and
@@ -710,8 +708,9 @@ unsigned int _computeHash(char* key, unsigned int capacity) {
 
 ### Testing our hashing function
 
-What we want to test now is if, at least, our function outputs the same values for a given key. We will do a simple test to give us an idea of how consistent the results are when playing with the upper limit for the result, and by reproducing the same hash several times.
-We will make a simple test, this is not a real proof of consistency, neither a proof for homogeneous distribution of the output. Doing that would require a formal (logical and mathemathical) demostration.
+Now, our goal is to test whether our hash function consistently produces the same output for a given key. We'll conduct a simple test to gauge the consistency of the results when we manipulate the upper limit of the hash value and repeat the operation multiple times with same key.
+
+However, it's important to note that this test is not an absolute proof of consistency or a demonstration of homogeneous distribution of the hash values. To provide such proof, we would need a formal, logical, and mathematical demonstration, which exceeds the scope of this article.
 
 ```c
 void _testCreateHashConsistency() {
@@ -733,9 +732,9 @@ void _testCreateHashConsistency() {
 
 ### Checking if we need to resize
 
-The moment where we decide to resize our hashing table is somewhat arbitrary. A common practice is to calculate a ratio between the buckets or linked lists available and the number of elements we have stored in our data structure.
+Determining when to resize our hash table is somewhat arbitrary. A common approach is to calculate a ratio between the number of buckets or linked lists available and the number of elements stored in our data structure.
 
-To perform this operation we will accept a hash table and then calculate if one more element would cause the ratio to overpass our selected limit.
+To implement this operation, we will accept a hash table as input and calculate whether adding one more element would cause the ratio to exceed our predetermined limit.
 
 ```c
 // We return a boolean and accept a hash table
@@ -755,10 +754,9 @@ bool _needsToResize(HashTable* hashTable) {
 
 ### Doing the actual resizing
 
-To resize our hash table we need to create a new one with a greater capacity, one with more buckets for more linked lists. Then we need to traverse all the lists and, try to it's elements in our new hash table. To ease this whole process we will use the same `Store` method that we implemented for our hash tables.
+To resize our hash table, we follow a process of creating a new hash table with a larger capacity, which means more buckets for storing linked lists. We then traverse all the existing linked lists and attempt to store their elements in the new hash table. To simplify this process, we can use the same `Store` method that we implemented for our hash tables.
 
-After all elements were copied to our new hash table, we can free the old one and return a pointer to the new one, so the upper scope can re-assign their references.
-If we fail to allocate all we need, we just need to clean everything up and so the upper scope can re-try.
+Once all elements have been copied to the new hash table, we can free the memory occupied by the old hash table and return a pointer to the new hash table. If we encounter any issues during the allocation process, we need to clean up all allocated memory and inform the upper scope to handle the failure appropriately.
 
 ```c
 // we accept a pointer to a hash table and return a pointer to a hash table
@@ -823,8 +821,7 @@ HashTable* _resize(HashTable* hashTable) {
 
 ### Testing the resizing
 
-We will do a small check just to know if the resizing is being performed.
-For this, we will attempt to store fifty key-value pairs and then check y if the capacity was changed.
+To verify if the resizing operation is being performed correctly, we can do a simple check by attempting to store fifty key-value pairs in the hash table and then checking if the capacity has changed. This check can help us confirm if the resizing process is triggered and if the capacity of the hash table is updated accordingly.
 
 ```c
 void _testResizing() {
@@ -858,10 +855,14 @@ void _testResizing() {
 
 ### Getting a value from the hash table
 
-To get a value by it's key, we will check if both the hash table and the key are valid inputs.
-Then we will calculate the hash of the key, so we know in which linked list we should be traversing to find the correct node.
-If the position for that linked list is empty, we know the key is not present in our hash table.
-If we find a linked list in that slot, we delegate the search to our GetNodeValue function.
+To retrieve a value by its key from the hash table, we need to perform the following steps:
+
+1. Validate that both the hash table and the key are valid inputs.
+2. Calculate the hash of the key using our hash function. This will give us the index of the linked list where the value may be stored.
+3. If the slot for that linked list is empty, it means the key is not present in our hash table. We return null to indicate the absence of a value.
+4. If we find a linked list in that slot, we need to search for the key within the linked list. We delegate this search operation to our GetNodeValue function.
+5. The GetNodeValue function will traverse the linked list, comparing each node's key with the input key. If a matching key is found, we return the corresponding value.
+6. If we reach the end of the linked list without finding a matching key, we return null to indicate that the key is not present in our hash table.
 
 ```c
 //we get a pointer to a hash table, and a pointer to a string
@@ -886,8 +887,13 @@ char* Get(HashTable* hashTable, char* key) {
 
 ### Remving a key-value pair from the hash table
 
-To remove a key-value pair we will perform some checks on the inputs to know they are valid. Then we will calculate the hash and return if there is no linked list asociated with that hash.
-Then, if we find the linked list, we will pass a pointer to a head pointer to our RemoveNode function, so it can remove the node and replace the head if necessary.
+To remove a key-value pair from the hash table, we need to follow these steps:
+
+1. Validate the inputs to ensure they are valid (hash table and key).
+2. Calculate the hash of the key using our hash function to determine the linked list where the pair may be stored.
+3. If there is no linked list associated with the calculated hash, it means the key is not present in the hash table. We can return from the function at this point.
+4. If a linked list is found at the calculated hash, we pass a pointer to the head pointer of the linked list to our RemoveNode function.
+5. The RemoveNode function will traverse the linked list, searching for the node with a matching key. If found, it will remove the node from the linked list and update the head pointer if necessary.
 
 ```c
 //we get a pointer to a hash table, and a pointer to a string
