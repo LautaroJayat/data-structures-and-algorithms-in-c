@@ -5,7 +5,21 @@
         "array": "c",
         "__bit_reference": "c",
         "__split_buffer": "c",
-        "vector": "c"
+        "vector": "c",
+        "__node_handle": "c",
+        "atomic": "c",
+        "bitset": "c",
+        "chrono": "c",
+        "cstddef": "c",
+        "deque": "c",
+        "__memory": "c",
+        "limits": "c",
+        "locale": "c",
+        "optional": "c",
+        "ratio": "c",
+        "system_error": "c",
+        "tuple": "c",
+        "type_traits": "c"
     },
     "cSpell.words": [
         "struct"
